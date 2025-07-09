@@ -1,0 +1,3 @@
+resources:
+  - best-practices/require-image-digest/require-image-digest.yaml
+  - pod-security/require-run-as-nonroot/require-run-as-nonroot.yaml

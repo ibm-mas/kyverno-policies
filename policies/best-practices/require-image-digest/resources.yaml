@@ -1,0 +1,70 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment
+  namespace: mas-dev-core
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename:v1.0.0
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment
+  namespace: mas-dev-core
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename@sha256:bd1487129c4e01470664c3f3c9a25ce01f73ff3df75ffa7eb3388d3d4b945369
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob
+  namespace: mas-dev-core
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename:v1.0.0
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob
+  namespace: mas-dev-core
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename@sha256:bd1487129c4e01470664c3f3c9a25ce01f73ff3df75ffa7eb3388d3d4b945369
