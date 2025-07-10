@@ -1,0 +1,90 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment
+  namespace: mas-dev-core
+  labels:
+    app: myapp
+spec:
+  template:
+    spec:
+      containers:
+        - name: goproxy
+          image: registry.k8s.io/goproxy:0.1
+      tolerations:
+        - key: "randomkey"
+          operator: "Exists"
+          effect: "NoSchedule"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment-schedule-on-master
+  namespace: mas-dev-core
+  labels:
+    app: myapp
+spec:
+  template:
+    spec:
+      containers:
+        - name: goproxy
+          image: registry.k8s.io/goproxy:0.1
+      tolerations:
+        - key: "node-role.kubernetes.io/master"
+          operator: "Exists"
+          effect: "NoSchedule"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment-schedule-on-master
+  namespace: mas-dev-core
+  labels:
+    app: myapp
+spec:
+  template:
+    spec:
+      containers:
+        - name: goproxy
+          image: registry.k8s.io/goproxy:0.1
+      tolerations:
+        - key: "node-role.kubernetes.io/master"
+          operator: "Exists"
+          effect: "NoSchedule"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment-schedule-on-controlplane
+  namespace: mas-dev-core
+  labels:
+    app: myapp
+spec:
+  template:
+    spec:
+      containers:
+        - name: goproxy
+          image: registry.k8s.io/goproxy:0.1
+      tolerations:
+        - key: "node-role.kubernetes.io/control-plane"
+          operator: "Exists"
+          effect: "NoSchedule"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment-schedule-on-infra
+  namespace: mas-dev-core
+  labels:
+    app: myapp
+spec:
+  template:
+    spec:
+      containers:
+        - name: goproxy
+          image: registry.k8s.io/goproxy:0.1
+      tolerations:
+        - key: "node-role.kubernetes.io/infra"
+          operator: "Exists"
+          effect: "NoSchedule"

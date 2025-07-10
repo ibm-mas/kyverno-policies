@@ -1,0 +1,22 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: disallow-role-with-wildcards
+policies:
+- disallow-role-with-wildcards.yaml
+resources:
+- resources.yaml
+results:
+- kind: Role
+  policy: mas-disallow-role-with-wildcards
+  resources:
+  - badrole-wildcard-in-resources
+  - badrole-wildcard-in-verbs
+  result: fail
+  rule: disallow-wildcards
+- kind: Role
+  policy: mas-disallow-role-with-wildcards
+  resources:
+  - goodrole
+  result: pass
+  rule: disallow-wildcards

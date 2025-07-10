@@ -1,0 +1,46 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: disallow-master-infra-tolerations
+policies:
+  - disallow-master-infra-tolerations.yaml
+resources:
+  - resources.yaml
+results:
+  - kind: Deployment
+    policy: mas-disallow-master-infra-tolerations
+    resources:
+      - baddeployment-schedule-on-master
+    result: fail
+    rule: disallow-master-tolerations
+  - kind: Deployment
+    policy: mas-disallow-master-infra-tolerations
+    resources:
+      - baddeployment-schedule-on-controlplane
+    result: fail
+    rule: disallow-controlplane-tolerations
+  - kind: Deployment
+    policy: mas-disallow-master-infra-tolerations
+    resources:
+      - baddeployment-schedule-on-infra
+    result: fail
+    rule: disallow-infra-tolerations
+
+  - kind: Deployment
+    policy: mas-disallow-master-infra-tolerations
+    resources:
+      - gooddeployment
+    result: pass
+    rule: disallow-master-tolerations
+  - kind: Deployment
+    policy: mas-disallow-master-infra-tolerations
+    resources:
+      - gooddeployment
+    result: pass
+    rule: disallow-controlplane-tolerations
+  - kind: Deployment
+    policy: mas-disallow-master-infra-tolerations
+    resources:
+      - gooddeployment
+    result: pass
+    rule: disallow-infra-tolerations

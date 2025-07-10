@@ -4,7 +4,7 @@ metadata:
   name: mas-require-image-digest
   annotations:
     policies.kyverno.io/title: Require Images Use Digests
-    policies.kyverno.io/category: MAS Best Practices
+    policies.kyverno.io/category: Maximo Application Suite - Other
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/minversion: 1.6.0

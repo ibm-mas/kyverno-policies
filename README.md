@@ -5,13 +5,23 @@ Policy List
 -------------------------------------------------------------------------------
 All MAS ClusterPolicies are prefixed as `mas-` and are constrained to the standard MAS namespaces only (`mas-*`) allowing them to be deployed into a cluster without impacting anything unrelated to Maximo Application Suite.
 
-All policies are configured to operator in **Audit** mode only.
+All policies are configured to operate in **Audit** mode only.
 
-### Best Practices
-- **[Require Image Digest](policies/best-practices/require-image-digest/require-image-digest.yaml)** ensures that our container images are immutable and eliminates the potential for man in the middle attacks via image tag spoofing
+### Security Context
+- **[Disallow Priviledge Escalation](policies/security-context/disallow-priviledge-escalation/disallow-priviledge-escalation.yaml)** ensures that all permissions are dropped from our pods, with only those required added back.  This policy is based on the standard Kyverno [require-drop-all](https://github.com/kyverno/policies/tree/main/best-practices/require-drop-all) policy.
+- **[Disallow Run as root User](policies/security-context/disallow-run-as-root-user/disallow-run-as-root-user.yaml)** ensures that our containers do not use `runAsUser` to set the user to root (uid 0), which can potentially allow an attacker to gain access to the host and escalate privileges.  This policy is based on the standard Kyverno [require-run-as-non-root-user](https://github.com/kyverno/policies/tree/main/pod-security/restricted/require-run-as-non-root-user) policy.
+- **[Require Drop All](policies/security-context/require-image-digest/require-image-digest.yaml)** ensures that our container images are immutable and eliminates the potential for man in the middle attacks via image tag spoofing
+- **[Require Run as Non-root](policies/security-context/require-run-as-nonroot/require-run-as-nonroot.yaml)** ensures that our containers are not ran as as root, which can potentially allow an attacker to gain access to the host and escalate privileges.  This policy is based on the standard Kyverno [require-run-as-nonroot](https://github.com/kyverno/policies/tree/main/pod-security/restricted/require-run-as-nonroot) policy.
 
-### Pod Security
-- **[Require Run as Non-root](policies/pod-security/require-run-as-nonroot/require-run-as-nonroot.yaml)** ensures that our containers are not ran as as root, which can potentially allow an attacker to gain access to the host and escalate privileges.  This policy is based on the standard Kyverno [require-run-as-nonroot](https://github.com/kyverno/policies/tree/main/pod-security/restricted/require-run-as-nonroot) policy.
+### Role Based Access Control
+- **[Disallow Role with Wildcards](policies/rbac/disallow-role-with-wildcards/disallow-role-with-wildcards.yaml)** ensures that our Roles do not use `*` to define either the resources or the verbs of any rule, this ensures the permissions granted follow the principle of least privilege (PoLP).
+
+### Other
+- **[Disallow Master Node Tolerations](policies/other/disallow-master-infra-tolerations/disallow-master-infra-tolerations.yaml)** ensures that no pods are configured to allow scheduling on nodes tainted with the `node-role.kubernetes.io` taints for  master, infra, or control-plane nodes.
+- **[Require Image Digest](policies/other/require-image-digest/require-image-digest.yaml)** ensures that all references to container images are immutable, eliminating the potential for man-in-the-middle attacks via image registry/tag spoofing.
+- **[Require Pod Probes](policies/other/require-pod-probes/require-pod-probes.yaml)** ensures that all pods define liveness, readiness, & startup probes to support standard Kubernetes lifecycle management.  This policy is based on the standard Kyverno [require-probes](https://github.com/kyverno/policies/tree/main/best-practices/require-probes) policy.
+- **[Require Unique Pod Probes](policies/other/require-pod-probes-unique/require-pod-probes-unique.yaml)** ensures that the liveness and readiness probes are not the same; liveness and readiness checks accomplish different goals and reusing the same probe for both is an anti-pattern that can lead to problems at runtime.
+- **[Require Pod Requests and Limits](policies/other/require-pod-requests-limits/require-pod-requests-limits.yaml)** ensures that all pods define resource requests and limits, enabling optimal scheduling and preventing unexpected resource consumption.  This policy is based on the standard Kyverno [require-pod-requests-limits](https://github.com/kyverno/policies/tree/main/best-practices/require-pod-requests-limits) policy.
 
 
 Install Kyverno
@@ -60,10 +70,17 @@ kustomize build https://github.com/ibm-mas/kyverno-policies//policies/ | oc appl
 Auditing Policies
 -------------------------------------------------------------------------------
 ```bash
-oc get ClusterPolicy
-NAME                         ADMISSION   BACKGROUND   READY   AGE   MESSAGE
-mas-require-image-digest     true        true         True    15h   Ready
-mas-require-run-as-nonroot   true        true         True    15h   Ready
+oc get clusterpolicies
+NAME                                    ADMISSION   BACKGROUND   READY   AGE    MESSAGE
+mas-disallow-master-infra-tolerations   true        true         True    8m5s   Ready
+mas-disallow-privilege-escalation       true        true         True    134m   Ready
+mas-disallow-role-with-wildcards        true        true         True    8m4s   Ready
+mas-disallow-run-as-root-user           true        true         True    134m   Ready
+mas-require-drop-all-capabilities       true        true         True    8s     Ready
+mas-require-image-digest                true        true         True    37h    Ready
+mas-require-pod-probes                  true        true         True    134m   Ready
+mas-require-requests-limits             true        true         True    134m   Ready
+mas-require-run-as-nonroot              true        true         True    37h    Ready
 ```
 
 ```bash

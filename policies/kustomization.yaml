@@ -1,3 +1,12 @@
 resources:
-  - best-practices/require-image-digest/require-image-digest.yaml
-  - pod-security/require-run-as-nonroot/require-run-as-nonroot.yaml
+  - other/disallow-master-infra-tolerations/disallow-master-infra-tolerations.yaml
+  - other/require-image-digest/require-image-digest.yaml
+  - other/require-pod-probes/require-pod-probes.yaml
+  - other/require-pod-requests-limits/require-pod-requests-limits.yaml
+
+  - rbac/disallow-role-with-wildcards/disallow-role-with-wildcards.yaml
+
+  - security-context/disallow-privilege-escalation/disallow-privilege-escalation.yaml
+  - security-context/disallow-run-as-root-user/disallow-run-as-root-user.yaml
+  - security-context/require-drop-all/require-drop-all.yaml
+  - security-context/require-run-as-nonroot/require-run-as-nonroot.yaml

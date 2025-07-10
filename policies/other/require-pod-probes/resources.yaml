@@ -1,0 +1,131 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod-allprobes
+  namespace: mas-dev-core
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: goproxy
+    image: registry.k8s.io/goproxy:0.1
+    readinessProbe:
+      httpGet:
+        path: /probes/readiness
+        port: 9443
+        scheme: HTTPS
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      failureThreshold: 6
+    livenessProbe:
+      httpGet:
+        path: /probes/liveness
+        port: 9443
+        scheme: HTTPS
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      failureThreshold: 9
+    startupProbe:
+      httpGet:
+        path: /probes/liveness
+        port: 9443
+        scheme: HTTPS
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      failureThreshold: 15
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod-noprobes
+  namespace: mas-dev-core
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: goproxy
+    image: registry.k8s.io/goproxy:0.1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod-noreadiness
+  namespace: mas-dev-core
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: goproxy
+    image: registry.k8s.io/goproxy:0.1
+    livenessProbe:
+      httpGet:
+        path: /probes/liveness
+        port: 9443
+        scheme: HTTPS
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      failureThreshold: 9
+    startupProbe:
+      httpGet:
+        path: /probes/liveness
+        port: 9443
+        scheme: HTTPS
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      failureThreshold: 15
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod-noliveness
+  namespace: mas-dev-core
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: goproxy
+    image: registry.k8s.io/goproxy:0.1
+    readinessProbe:
+      httpGet:
+        path: /probes/readiness
+        port: 9443
+        scheme: HTTPS
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      failureThreshold: 6
+    startupProbe:
+      httpGet:
+        path: /probes/liveness
+        port: 9443
+        scheme: HTTPS
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      failureThreshold: 15
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod-nostartup
+  namespace: mas-dev-core
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: goproxy
+    image: registry.k8s.io/goproxy:0.1
+    readinessProbe:
+      httpGet:
+        path: /probes/readiness
+        port: 9443
+        scheme: HTTPS
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      failureThreshold: 6
+    livenessProbe:
+      httpGet:
+        path: /probes/liveness
+        port: 9443
+        scheme: HTTPS
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      failureThreshold: 9

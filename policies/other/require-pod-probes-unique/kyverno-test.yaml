@@ -1,0 +1,21 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-pod-probes-unique
+policies:
+  - require-pod-probes-unique.yaml
+resources:
+  - resources.yaml
+results:
+  - kind: Deployment
+    policy: mas-require-pod-probes-unique
+    resources:
+      - baddeployment
+    result: fail
+    rule: validate-probes-are-unique
+  - kind: Deployment
+    policy: mas-require-pod-probes-unique
+    resources:
+      - gooddeployment
+    result: pass
+    rule: validate-probes-are-unique

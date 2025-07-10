@@ -1,0 +1,24 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-pod-probes
+policies:
+  - require-pod-probes.yaml
+resources:
+  - resources.yaml
+results:
+  - kind: Pod
+    policy: mas-require-pod-probes
+    resources:
+      - badpod-noprobes
+      - badpod-noreadiness
+      - badpod-noliveness
+      - badpod-nostartup
+    result: fail
+    rule: validate-probes
+  - kind: Pod
+    policy: mas-require-pod-probes
+    resources:
+      - goodpod-allprobes
+    result: pass
+    rule: validate-probes
