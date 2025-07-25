@@ -21,13 +21,30 @@ spec:
   background: true
   rules:
     - name: validate-probes
+      preconditions:
+        any:
+          - key: "{{ to_string(request.object.metadata.ownerReferences[?kind=='Job']) }}"
+            operator: In
+            # "null" is when there is no ownerReferences (bare pod or pod controller)
+            # "[]" is when ownerReferences.kind is different than Job
+            value: ["null", "[]"]
       match:
         any:
           - resources:
               kinds:
                 - Pod
               namespaces:
-                - "mas-*"
+                - "mas-*-core"
+                - "mas-*-assist"
+                - "mas-*-facilities"
+                - "mas-*-iot"
+                - "mas-*-manage"
+                - "mas-*-monitor"
+                - "mas-*-optimizer"
+                - "mas-*-predict"
+                - "mas-*-visualinspection"
+                - "sls-*"
+                - "ibm-sls"
       validate:
         message: "Liveness, readiness, & startup probes are required for all containers."
         foreach:

@@ -1,27 +1,28 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: mas-require-image-digest
+  name: mas-disallow-pod-template-hash
   annotations:
-    policies.kyverno.io/title: Require Images Use Digests
+    pod-policies.kyverno.io/autogen-controllers: none
+    policies.kyverno.io/title: Disallow Pod Template Hash
     policies.kyverno.io/category: Maximo Application Suite - Other
-    policies.kyverno.io/severity: medium
-    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/subject: Pod,Deployment,StatefulSet
     policies.kyverno.io/minversion: 1.6.0
     policies.kyverno.io/description: >-
-      Use of a SHA checksum when pulling an image is often preferable because tags
-      are mutable and can be overwritten. This policy checks to ensure that all images
-      use SHA checksums rather than tags.
+      Prevent pod-template-hash from being manually added to deployment objects to prevent a
+      runaway condition in replicasets and pods.
 spec:
   validationFailureAction: Audit
   background: true
   rules:
-    - name: require-image-digest
+    - name: restrict-pod-template-hash
       match:
         any:
           - resources:
               kinds:
-                - Pod
+                - Deployment
+                - StatefulSet
+                - DaemonSet
               namespaces:
                 - "mas-*-core"
                 - "mas-*-assist"
@@ -35,8 +36,9 @@ spec:
                 - "sls-*"
                 - "ibm-sls"
       validate:
-        message: "Images must use checksums rather than tags."
+        message: Cannot add pod-template-hash manually.
         pattern:
           spec:
-            containers:
-              - image: "*@sha256:*"
+            selector:
+              matchLabels:
+                X(pod-template-hash): "*?"

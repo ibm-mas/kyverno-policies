@@ -23,7 +23,17 @@ spec:
               kinds:
                 - Role
               namespaces:
-                - "mas-*"
+                - "mas-*-core"
+                - "mas-*-assist"
+                - "mas-*-facilities"
+                - "mas-*-iot"
+                - "mas-*-manage"
+                - "mas-*-monitor"
+                - "mas-*-optimizer"
+                - "mas-*-predict"
+                - "mas-*-visualinspection"
+                - "sls-*"
+                - "ibm-sls"
       validate:
         message: "Use of a wildcard ('*') in a role's resources or verbs is forbidden."
         deny:

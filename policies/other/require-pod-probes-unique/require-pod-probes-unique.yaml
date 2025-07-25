@@ -28,7 +28,17 @@ spec:
                 - DaemonSet
                 - StatefulSet
               namespaces:
-                - "mas-*"
+                - "mas-*-core"
+                - "mas-*-assist"
+                - "mas-*-facilities"
+                - "mas-*-iot"
+                - "mas-*-manage"
+                - "mas-*-monitor"
+                - "mas-*-optimizer"
+                - "mas-*-predict"
+                - "mas-*-visualinspection"
+                - "sls-*"
+                - "ibm-sls"
       validate:
         message: "Liveness and readiness probes cannot be the same."
         deny:

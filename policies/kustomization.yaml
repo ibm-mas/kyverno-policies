@@ -1,12 +1,23 @@
 resources:
-  - other/disallow-master-infra-tolerations/disallow-master-infra-tolerations.yaml
+  - kyverno-additional-rbac.yaml
+
+  - other/disallow-pod-template-hash/disallow-pod-template-hash.yaml
+  - other/disallow-service-external-ips/disallow-service-external-ips.yaml
+  - other/require-hpa-minreplicas/require-hpa-minreplicas.yaml
   - other/require-image-digest/require-image-digest.yaml
   - other/require-pod-probes/require-pod-probes.yaml
   - other/require-pod-requests-limits/require-pod-requests-limits.yaml
+  - other/require-storageclass/require-storageclass.yaml
 
   - rbac/disallow-role-with-wildcards/disallow-role-with-wildcards.yaml
 
+  - scheduling/disallow-master-infra-tolerations/disallow-master-infra-tolerations.yaml
+  - scheduling/disallow-node-selection/disallow-node-selection.yaml
+  - scheduling/require-topologyspreadconstraints/require-topologyspreadconstraints.yaml
+
   - security-context/disallow-privilege-escalation/disallow-privilege-escalation.yaml
   - security-context/disallow-run-as-root-user/disallow-run-as-root-user.yaml
+  - security-context/disallow-sysctls/disallow-sysctls.yaml
   - security-context/require-drop-all/require-drop-all.yaml
+  - security-context/require-ro-rootfs/require-ro-rootfs.yaml
   - security-context/require-run-as-nonroot/require-run-as-nonroot.yaml

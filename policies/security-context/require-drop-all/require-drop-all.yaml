@@ -21,11 +21,21 @@ spec:
     - name: require-drop-all
       match:
         any:
-        - resources:
-            kinds:
-              - Pod
-            namespaces:
-              - "mas-*"
+          - resources:
+              kinds:
+                - Pod
+              namespaces:
+                - "mas-*-core"
+                - "mas-*-assist"
+                - "mas-*-facilities"
+                - "mas-*-iot"
+                - "mas-*-manage"
+                - "mas-*-monitor"
+                - "mas-*-optimizer"
+                - "mas-*-predict"
+                - "mas-*-visualinspection"
+                - "sls-*"
+                - "ibm-sls"
       validate:
         message: >-
           Containers must drop `ALL` capabilities.
@@ -34,6 +44,6 @@ spec:
             deny:
               conditions:
                 all:
-                - key: ALL
-                  operator: AnyNotIn
-                  value: "{{ element.securityContext.capabilities.drop[].to_upper(@) || `[]` }}"
+                  - key: ALL
+                    operator: AnyNotIn
+                    value: "{{ element.securityContext.capabilities.drop[].to_upper(@) || `[]` }}"

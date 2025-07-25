@@ -1,0 +1,39 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: topologyspreadconstraints
+policies:
+  - require-topologyspreadconstraints.yaml
+resources:
+  - resources.yaml
+results:
+  - policy: mas-require-topologyspreadconstraints
+    rule: spread-pods
+    resources:
+      - pass
+    kind: StatefulSet
+    result: pass
+  - policy: mas-require-topologyspreadconstraints
+    rule: spread-pods
+    resources:
+      - fail1
+    kind: StatefulSet
+    result: fail
+  - policy: mas-require-topologyspreadconstraints
+    rule: spread-pods
+    resources:
+      - fail2
+    kind: StatefulSet
+    result: fail
+  - policy: mas-require-topologyspreadconstraints
+    rule: spread-pods
+    resources:
+      - fail3
+    kind: StatefulSet
+    result: fail
+  - policy: mas-require-topologyspreadconstraints
+    rule: spread-pods
+    resources:
+      - skip
+    kind: StatefulSet
+    result: skip

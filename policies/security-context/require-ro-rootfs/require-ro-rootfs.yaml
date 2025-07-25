@@ -1,22 +1,24 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: mas-require-image-digest
+  name: mas-require-ro-rootfs
   annotations:
-    policies.kyverno.io/title: Require Images Use Digests
-    policies.kyverno.io/category: Maximo Application Suite - Other
+    policies.kyverno.io/title: Require Read-Only Root Filesystem
+    policies.kyverno.io/category: Maximo Application Suite - Security Context
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/minversion: 1.6.0
     policies.kyverno.io/description: >-
-      Use of a SHA checksum when pulling an image is often preferable because tags
-      are mutable and can be overwritten. This policy checks to ensure that all images
-      use SHA checksums rather than tags.
+      A read-only root file system helps to enforce an immutable infrastructure strategy;
+      the container only needs to write on the mounted volume that persists the state.
+      An immutable root filesystem can also prevent malicious binaries from writing to the
+      host system. This policy validates that containers define a securityContext
+      with `readOnlyRootFilesystem: true`.
 spec:
   validationFailureAction: Audit
   background: true
   rules:
-    - name: require-image-digest
+    - name: validate-readOnlyRootFilesystem
       match:
         any:
           - resources:
@@ -35,8 +37,9 @@ spec:
                 - "sls-*"
                 - "ibm-sls"
       validate:
-        message: "Images must use checksums rather than tags."
+        message: "Root filesystem must be read-only."
         pattern:
           spec:
             containers:
-              - image: "*@sha256:*"
+              - securityContext:
+                  readOnlyRootFilesystem: true

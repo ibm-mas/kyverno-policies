@@ -18,39 +18,49 @@ spec:
   validationFailureAction: Audit
   background: true
   rules:
-  - name: validate-resources
-    match:
-      any:
-      - resources:
-          kinds:
-          - Pod
-          namespaces:
-          - "mas-*"
-    validate:
-      message: "CPU and memory resource requests and limits are required and need to be non-zero"
-      pattern:
-        spec:
-          containers:
+    - name: validate-resources
+      match:
+        any:
           - resources:
-              requests:
-                memory: ">0"
-                cpu: ">0"
-              limits:
-                memory: ">0"
-                cpu: ">0"
-          =(initContainers):
-          - resources:
-              requests:
-                memory: ">0"
-                cpu: ">0"
-              limits:
-                memory: ">0"
-                cpu: ">0"
-          =(ephemeralContainers):
-          - resources:
-              requests:
-                memory: ">0"
-                cpu: ">0"
-              limits:
-                memory: ">0"
-                cpu: ">0"
+              kinds:
+                - Pod
+              namespaces:
+                - "mas-*-core"
+                - "mas-*-assist"
+                - "mas-*-facilities"
+                - "mas-*-iot"
+                - "mas-*-manage"
+                - "mas-*-monitor"
+                - "mas-*-optimizer"
+                - "mas-*-predict"
+                - "mas-*-visualinspection"
+                - "sls-*"
+                - "ibm-sls"
+      validate:
+        message: "CPU and memory resource requests and limits are required and need to be non-zero"
+        pattern:
+          spec:
+            containers:
+              - resources:
+                  requests:
+                    memory: ">0"
+                    cpu: ">0"
+                  limits:
+                    memory: ">0"
+                    cpu: ">0"
+            =(initContainers):
+              - resources:
+                  requests:
+                    memory: ">0"
+                    cpu: ">0"
+                  limits:
+                    memory: ">0"
+                    cpu: ">0"
+            =(ephemeralContainers):
+              - resources:
+                  requests:
+                    memory: ">0"
+                    cpu: ">0"
+                  limits:
+                    memory: ">0"
+                    cpu: ">0"

@@ -19,11 +19,21 @@ spec:
     - name: privilege-escalation
       match:
         any:
-        - resources:
-            kinds:
-              - Pod
-            namespaces:
-              - "mas-*"
+          - resources:
+              kinds:
+                - Pod
+              namespaces:
+                - "mas-*-core"
+                - "mas-*-assist"
+                - "mas-*-facilities"
+                - "mas-*-iot"
+                - "mas-*-manage"
+                - "mas-*-monitor"
+                - "mas-*-optimizer"
+                - "mas-*-predict"
+                - "mas-*-visualinspection"
+                - "sls-*"
+                - "ibm-sls"
       validate:
         message: >-
           Privilege escalation is disallowed. The fields
@@ -34,11 +44,11 @@ spec:
         pattern:
           spec:
             =(ephemeralContainers):
-            - securityContext:
-                allowPrivilegeEscalation: "false"
+              - securityContext:
+                  allowPrivilegeEscalation: "false"
             =(initContainers):
-            - securityContext:
-                allowPrivilegeEscalation: "false"
+              - securityContext:
+                  allowPrivilegeEscalation: "false"
             containers:
-            - securityContext:
-                allowPrivilegeEscalation: "false"
+              - securityContext:
+                  allowPrivilegeEscalation: "false"

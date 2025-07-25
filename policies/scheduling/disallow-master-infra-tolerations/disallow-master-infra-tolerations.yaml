@@ -25,7 +25,17 @@ spec:
               kinds:
                 - Pod
               namespaces:
-                - "mas-*"
+                - "mas-*-core"
+                - "mas-*-assist"
+                - "mas-*-facilities"
+                - "mas-*-iot"
+                - "mas-*-manage"
+                - "mas-*-monitor"
+                - "mas-*-optimizer"
+                - "mas-*-predict"
+                - "mas-*-visualinspection"
+                - "sls-*"
+                - "ibm-sls"
       validate:
         message: Should not use toleration(node-role.kubernetes.io/master) in yaml specification which schedule on master/controlplane nodes.
         pattern:
@@ -40,7 +50,17 @@ spec:
               kinds:
                 - Pod
               namespaces:
-                - "mas-*"
+                - "mas-*-core"
+                - "mas-*-assist"
+                - "mas-*-facilities"
+                - "mas-*-iot"
+                - "mas-*-manage"
+                - "mas-*-monitor"
+                - "mas-*-optimizer"
+                - "mas-*-predict"
+                - "mas-*-visualinspection"
+                - "sls-*"
+                - "ibm-sls"
       validate:
         message: Should not use toleration(node-role.kubernetes.io/controlplane) in yaml specification which schedule on master/controlplane nodes.
         pattern:
@@ -55,7 +75,17 @@ spec:
               kinds:
                 - Pod
               namespaces:
-                - "mas-*"
+                - "mas-*-core"
+                - "mas-*-assist"
+                - "mas-*-facilities"
+                - "mas-*-iot"
+                - "mas-*-manage"
+                - "mas-*-monitor"
+                - "mas-*-optimizer"
+                - "mas-*-predict"
+                - "mas-*-visualinspection"
+                - "sls-*"
+                - "ibm-sls"
       validate:
         message: Should not use toleration(node-role.kubernetes.io/infra) in yaml specification which schedule on infrastructure nodes.
         pattern:

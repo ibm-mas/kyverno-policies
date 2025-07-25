@@ -1,0 +1,27 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: disallow-service-external-ips
+policies:
+  - disallow-service-external-ips.yaml
+resources:
+  - resources.yaml
+results:
+  - policy: mas-disallow-service-external-ips
+    rule: check-ips
+    resources:
+      - goodservice01
+    kind: Service
+    result: pass
+  - policy: mas-disallow-service-external-ips
+    rule: check-ips
+    resources:
+      - badservice01
+    kind: Service
+    result: fail
+  - policy: mas-disallow-service-external-ips
+    rule: check-ips
+    resources:
+      - badservice02
+    kind: Service
+    result: fail
