@@ -4,7 +4,7 @@ resources:
   - other/disallow-pod-template-hash/disallow-pod-template-hash.yaml
   - other/disallow-service-external-ips/disallow-service-external-ips.yaml
   - other/require-image-digest/require-image-digest.yaml
-  - other/require-pod-probes/require-pod-probes-unnique.yaml
+  - other/require-pod-probes/require-pod-probes-unique.yaml
   - other/require-pod-probes/require-pod-probes.yaml
   - other/require-pod-requests-limits/require-pod-requests-limits.yaml
   - other/require-storageclass/require-storageclass.yaml
