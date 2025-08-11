@@ -15,7 +15,10 @@ metadata:
       prohibiting the use of the `nodeSelector` and `nodeName` fields.
 spec:
   validationFailureAction: Audit
-  background: true
+  # The objective is to prevent the fields being assigned at creation time by a user, 
+  # however the scheduler will apply these fields when pods are assigned to a node
+  # so background scanning must not be enabled for this policy
+  background: false
   rules:
     - name: restrict-nodeselector
       match:
