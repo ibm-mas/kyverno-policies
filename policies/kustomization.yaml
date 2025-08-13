@@ -18,6 +18,6 @@ resources:
   - security-context/disallow-privilege-escalation/disallow-privilege-escalation.yaml
   - security-context/disallow-run-as-root-user/disallow-run-as-root-user.yaml
   - security-context/disallow-sysctls/disallow-sysctls.yaml
-  - security-context/require-drop-all/require-drop-all.yaml
+  - security-context/require-drop-all-capabilities/require-drop-all-capabilities.yaml
   - security-context/require-ro-rootfs/require-ro-rootfs.yaml
   - security-context/require-run-as-nonroot/require-run-as-nonroot.yaml
