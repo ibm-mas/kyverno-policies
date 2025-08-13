@@ -50,12 +50,14 @@ def testPolicies(policyName):
     )
     reports = policyReports.get()
     failures = []
+    policyMatchCount = 0
     for report in reports.items:
         resourceId = f"{report.scope.kind}:{report.scope.namespace}/{report.scope.name}"
         for result in report.results:
             if result.policy == policyName:
+                policyMatchCount += 1
                 if result.result == "fail":
                     failures.append(resourceId)
                 break
 
-    assert len(failures) == 0, f"{len(failures)} resources failed to comply with Kyverno policy '{policyName}': {failures}"
+    assert len(failures) == 0, f"{len(failures)}/{policyMatchCount} resources failed to comply with Kyverno policy '{policyName}': {failures}"
