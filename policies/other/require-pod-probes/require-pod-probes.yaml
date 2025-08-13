@@ -14,8 +14,8 @@ metadata:
       `livenessProbe` is performed by the kubelet to determine if the Pod's containers
       are running or need to be restarted. A `readinessProbe` is used by Services
       and Deployments to determine if the Pod is ready to receive network traffic.
-      This policy validates that all containers have one of livenessProbe, readinessProbe,
-      or startupProbe defined.
+      This policy validates that all containers have both a livenessProbe and a
+      readinessProbe defined.
 spec:
   validationFailureAction: Audit
   background: true
@@ -46,16 +46,13 @@ spec:
                 - "sls-*"
                 - "ibm-sls"
       validate:
-        message: "Liveness, readiness, & startup probes are required for all containers."
+        message: "Liveness & readiness probes are required for all containers (startup probes are optional)."
         foreach:
           - list: request.object.spec.containers[]
             deny:
               conditions:
                 any:
                   - key: livenessProbe
-                    operator: AllNotIn
-                    value: "{{ element.keys(@)[] }}"
-                  - key: startupProbe
                     operator: AllNotIn
                     value: "{{ element.keys(@)[] }}"
                   - key: readinessProbe
