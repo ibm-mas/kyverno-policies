@@ -1,14 +1,14 @@
 apiVersion: cli.kyverno.io/v1alpha1
 kind: Test
 metadata:
-  name: require-requests-limits
+  name: require-pod-requests-limits
 policies:
 - require-pod-requests-limits.yaml
 resources:
 - resources.yaml
 results:
 - kind: Pod
-  policy: mas-require-requests-limits
+  policy: mas-require-pod-requests-limits
   resources:
   - badpod01
   - badpod02
@@ -16,7 +16,7 @@ results:
   result: fail
   rule: validate-resources
 - kind: Pod
-  policy: mas-require-requests-limits
+  policy: mas-require-pod-requests-limits
   resources:
   - goodpod01
   - goodpod02

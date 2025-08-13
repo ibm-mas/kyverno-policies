@@ -1,9 +1,9 @@
 apiVersion: cli.kyverno.io/v1alpha1
 kind: Test
 metadata:
-  name: require-drop-all
+  name: require-drop-all-capabilities
 policies:
-- require-drop-all.yaml
+- require-drop-all-capabilities.yaml
 resources:
 - resources.yaml
 results:

@@ -2,6 +2,7 @@ import logging
 import pytest
 
 from kubernetes import config
+from kubernetes.dynamic.exceptions import NotFoundError
 from openshift.dynamic import DynamicClient
 
 logger = logging.getLogger()
@@ -28,12 +29,22 @@ dynClient = DynamicClient(k8s_client)
     "mas-disallow-privilege-escalation",
     "mas-disallow-run-as-root-user",
     "mas-disallow-sysctls",
-    "mas-require-drop-all",
+    "mas-require-drop-all-capabilities",
     "mas-require-ro-rootfs",
     "mas-require-run-as-nonroot",
 ])
 
 def testPolicies(policyName):
+    clusterPolicies = dynClient.resources.get(
+        api_version="kyverno.io/v1", kind="ClusterPolicy"
+    )
+    try:
+        policy = clusterPolicies.get(name=policyName)
+    except NotFoundError as e:
+        pytest.fail(f"Policy is not installed: {e}")
+
+    assert policy.metadata.name == policyName
+
     policyReports = dynClient.resources.get(
         api_version="wgpolicyk8s.io/v1alpha2", kind="PolicyReport"
     )
@@ -47,4 +58,4 @@ def testPolicies(policyName):
                     failures.append(resourceId)
                 break
 
-    assert len(failures) == 0, f"One or more resources failed to comply with Kyverno policy '{policyName}': {failures}"
+    assert len(failures) == 0, f"{len(failures)} resources failed to comply with Kyverno policy '{policyName}': {failures}"
