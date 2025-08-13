@@ -45,6 +45,14 @@ spec:
                 - "mas-*-visualinspection"
                 - "sls-*"
                 - "ibm-sls"
+      exclude:
+        resources:
+          kinds:
+            - Pod
+          selector:
+            matchExpressions:
+              - key: "job-name"
+                operator: Exists
       validate:
         message: "Liveness & readiness probes are required for all containers (startup probes are optional)."
         foreach:
