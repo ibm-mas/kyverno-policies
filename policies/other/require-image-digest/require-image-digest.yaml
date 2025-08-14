@@ -34,6 +34,14 @@ spec:
                 - "mas-*-visualinspection"
                 - "sls-*"
                 - "ibm-sls"
+      preconditions:
+        any:
+          - key: "{{ request.object.metadata.labels.\"app.kubernetes.io/managed-by\" || '' }}"
+            operator: NotEquals
+            value: olm
+          - key: "{{ (request.object.metadata.labels.\"app.kubernetes.io/managed-by\" == 'olm') && (request.object.spec.containers[*].image | join(',') | contains(@, 'icr.io')) }}"
+            operator: Equals
+            value: true
       validate:
         message: "Images must use checksums rather than tags."
         pattern:
