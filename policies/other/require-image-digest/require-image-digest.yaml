@@ -36,6 +36,9 @@ spec:
                 - "ibm-sls"
       preconditions:
         any:
+          - key: "{{ request.object.metadata.labels.\"app.kubernetes.io/instance\" || '' }}"
+            operator: NotEquals
+            value: ibm-truststore-mgr
           - key: "{{ request.object.metadata.labels.\"app.kubernetes.io/managed-by\" || '' }}"
             operator: NotEquals
             value: olm
