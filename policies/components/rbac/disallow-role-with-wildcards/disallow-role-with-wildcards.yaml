@@ -1,0 +1,50 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: mas-disallow-role-with-wildcards
+  annotations:
+    policies.kyverno.io/title: Disallow Wildcards in RBAC
+    policies.kyverno.io/category: IBM - RBAC
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Role
+    kyverno.io/kyverno-version: 1.6.2
+    policies.kyverno.io/minversion: 1.6.0
+    kyverno.io/kubernetes-version: "1.23"
+    policies.kyverno.io/description: >-
+      Use of wildcards ('*') in RBAC resource and verb lists does not follow the principal of least privilege.
+spec:
+  validationFailureAction: Audit
+  background: true
+  rules:
+    - name: disallow-wildcards
+      match:
+        any:
+          - resources:
+              kinds:
+                - Role
+              namespaces:
+                - "mas-*-core"
+                - "mas-*-assist"
+                - "mas-*-facilities"
+                - "mas-*-iot"
+                - "mas-*-manage"
+                - "mas-*-monitor"
+                - "mas-*-optimizer"
+                - "mas-*-predict"
+                - "mas-*-visualinspection"
+                - "sls-*"
+                - "ibm-sls"
+                - "ibm-dro"
+                - "redhat-marketplace"
+                - "db2u"
+      validate:
+        message: "Use of a wildcard ('*') in a role's resources or verbs is forbidden."
+        deny:
+          conditions:
+            any:
+              - key: "{{ contains(request.object.rules[].resources[], '*') }}"
+                operator: Equals
+                value: true
+              - key: "{{ contains(request.object.rules[].verbs[], '*') }}"
+                operator: Equals
+                value: true

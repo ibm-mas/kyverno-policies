@@ -1,0 +1,71 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: mas-require-pod-probes
+  annotations:
+    pod-policies.kyverno.io/autogen-controllers: DaemonSet,Deployment,StatefulSet
+    policies.kyverno.io/title: Require Pod Probes
+    policies.kyverno.io/category: IBM - Other
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      Liveness and readiness probes need to be configured to correctly manage a Pod's
+      lifecycle during deployments, restarts, and upgrades. For each Pod, a periodic
+      `livenessProbe` is performed by the kubelet to determine if the Pod's containers
+      are running or need to be restarted. A `readinessProbe` is used by Services
+      and Deployments to determine if the Pod is ready to receive network traffic.
+      This policy validates that all containers have both a livenessProbe and a
+      readinessProbe defined.
+spec:
+  validationFailureAction: Audit
+  background: true
+  rules:
+    - name: validate-probes
+      preconditions:
+        any:
+          - key: "{{ to_string(request.object.metadata.ownerReferences[?kind=='Job']) }}"
+            operator: In
+            # "null" is when there is no ownerReferences (bare pod or pod controller)
+            # "[]" is when ownerReferences.kind is different than Job
+            value: ["null", "[]"]
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaces:
+                - "mas-*-core"
+                - "mas-*-assist"
+                - "mas-*-facilities"
+                - "mas-*-iot"
+                - "mas-*-manage"
+                - "mas-*-monitor"
+                - "mas-*-optimizer"
+                - "mas-*-predict"
+                - "mas-*-visualinspection"
+                - "sls-*"
+                - "ibm-sls"
+                - "ibm-dro"
+                - "redhat-marketplace"
+                - "db2u"
+      exclude:
+        resources:
+          kinds:
+            - Pod
+          selector:
+            matchExpressions:
+              - key: "job-name"
+                operator: Exists
+      validate:
+        message: "Liveness & readiness probes are required for all containers (startup probes are optional)."
+        foreach:
+          - list: request.object.spec.containers[]
+            deny:
+              conditions:
+                any:
+                  - key: livenessProbe
+                    operator: AllNotIn
+                    value: "{{ element.keys(@)[] }}"
+                  - key: readinessProbe
+                    operator: AllNotIn
+                    value: "{{ element.keys(@)[] }}"
