@@ -35,6 +35,9 @@ spec:
                 - "mas-*-visualinspection"
                 - "sls-*"
                 - "ibm-sls"
+                - "ibm-dro"
+                - "redhat-marketplace"
+                - "db2u"
       validate:
         message: >-
           Running as root is not allowed. Either the field spec.securityContext.runAsNonRoot

@@ -45,6 +45,9 @@ spec:
                 - "mas-*-visualinspection"
                 - "sls-*"
                 - "ibm-sls"
+                - "ibm-dro"
+                - "redhat-marketplace"
+                - "db2u"
       exclude:
         resources:
           kinds:

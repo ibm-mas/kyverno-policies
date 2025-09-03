@@ -1,19 +1,15 @@
-import logging
-import pytest
+import sys
 import urllib3
 
 from kubernetes import config
 from kubernetes.dynamic.exceptions import NotFoundError
 from openshift.dynamic import DynamicClient
 
-logger = logging.getLogger()
-
 urllib3.disable_warnings()
-
 k8s_client = config.new_client_from_config()
 dynClient = DynamicClient(k8s_client)
 
-@pytest.mark.parametrize("policyName", [
+policyNames = [
     # Other
     "mas-disallow-pod-template-hash",
     "mas-disallow-service-external-ips",
@@ -42,34 +38,30 @@ dynClient = DynamicClient(k8s_client)
     "ford-require-reasonable-pdbs",
     "ford-require-replicas-allow-disruption",
     "ford-validate-hpa-minreplicas",
-])
+]
 
-def testPolicies(policyName):
-    clusterPolicies = dynClient.resources.get(
-        api_version="kyverno.io/v1", kind="ClusterPolicy"
-    )
+
+clusterPolicies = dynClient.resources.get(
+    api_version="kyverno.io/v1", kind="ClusterPolicy"
+)
+
+failures = {}
+for policyName in policyNames:
     try:
         policy = clusterPolicies.get(name=policyName)
     except NotFoundError as e:
-        pytest.fail(f"Policy is not installed: {e}")
-
-    assert policy.metadata.name == policyName
+        print(f"Policy is not installed: {e}", file=sys.stderr)
 
     policyReports = dynClient.resources.get(
         api_version="wgpolicyk8s.io/v1alpha2", kind="PolicyReport"
     )
-    reports = policyReports.get(namespace=None)
-    failures = []
-    policyMatchCount = 0
+    reports = policyReports.get(namespace="redhat-marketplace")
     for report in reports.items:
         resourceId = f"{report.scope.kind}:{report.scope.namespace}/{report.scope.name}"
-        logger.debug(f"Processing report {report.metadata.name} for {resourceId}")
         for result in report.results:
-            if result.policy == policyName:
-                logger.debug(f" - Processing result {result.policy}/{result.rule} {result.result}")
-                policyMatchCount += 1
-                if result.result == "fail":
-                    failures.append(resourceId)
-                    break
-
-    assert len(failures) == 0, f"{len(failures)}/{policyMatchCount} resources failed to comply with Kyverno policy '{policyName}': {failures}"
+            if result.policy == policyName and result.result == "fail":
+                if policyName not in failures:
+                    failures[policyName] = []
+                if result.rule not in failures[policyName]:
+                    failures[policyName].append(result.rule)
+                    print(f"{policyName} {result.rule} failed ({resourceId})")

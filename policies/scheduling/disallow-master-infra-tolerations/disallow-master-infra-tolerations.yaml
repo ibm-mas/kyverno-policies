@@ -36,6 +36,9 @@ spec:
                 - "mas-*-visualinspection"
                 - "sls-*"
                 - "ibm-sls"
+                - "ibm-dro"
+                - "redhat-marketplace"
+                - "db2u"
       validate:
         message: Should not use toleration(node-role.kubernetes.io/master) in yaml specification which schedule on master/controlplane nodes.
         pattern:
@@ -61,6 +64,9 @@ spec:
                 - "mas-*-visualinspection"
                 - "sls-*"
                 - "ibm-sls"
+                - "ibm-dro"
+                - "redhat-marketplace"
+                - "db2u"
       validate:
         message: Should not use toleration(node-role.kubernetes.io/controlplane) in yaml specification which schedule on master/controlplane nodes.
         pattern:
@@ -86,6 +92,9 @@ spec:
                 - "mas-*-visualinspection"
                 - "sls-*"
                 - "ibm-sls"
+                - "ibm-dro"
+                - "redhat-marketplace"
+                - "db2u"
       validate:
         message: Should not use toleration(node-role.kubernetes.io/infra) in yaml specification which schedule on infrastructure nodes.
         pattern:

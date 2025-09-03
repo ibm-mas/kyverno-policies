@@ -34,6 +34,9 @@ spec:
                 - "mas-*-visualinspection"
                 - "sls-*"
                 - "ibm-sls"
+                - "ibm-dro"
+                - "redhat-marketplace"
+                - "db2u"
       preconditions:
         any:
           - key: "{{ request.object.metadata.labels.\"app.kubernetes.io/managed-by\" || '' }}"

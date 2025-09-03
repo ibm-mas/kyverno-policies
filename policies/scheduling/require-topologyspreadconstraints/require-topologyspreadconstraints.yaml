@@ -45,6 +45,9 @@ spec:
                 - "mas-*-visualinspection"
                 - "sls-*"
                 - "ibm-sls"
+                - "ibm-dro"
+                - "redhat-marketplace"
+                - "db2u"
       validate:
         message: "topologySpreadConstraint for kubernetes.io/hostname & topology.kubernetes.io/zone are required"
         deny:

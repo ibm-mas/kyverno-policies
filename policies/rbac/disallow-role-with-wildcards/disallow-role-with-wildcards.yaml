@@ -34,6 +34,9 @@ spec:
                 - "mas-*-visualinspection"
                 - "sls-*"
                 - "ibm-sls"
+                - "ibm-dro"
+                - "redhat-marketplace"
+                - "db2u"
       validate:
         message: "Use of a wildcard ('*') in a role's resources or verbs is forbidden."
         deny:

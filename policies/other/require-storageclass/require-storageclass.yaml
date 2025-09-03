@@ -35,6 +35,9 @@ spec:
                 - "mas-*-visualinspection"
                 - "sls-*"
                 - "ibm-sls"
+                - "ibm-dro"
+                - "redhat-marketplace"
+                - "db2u"
       validate:
         message: "PersistentVolumeClaims must define a storageClassName."
         pattern:
@@ -58,6 +61,9 @@ spec:
                 - "mas-*-visualinspection"
                 - "sls-*"
                 - "ibm-sls"
+                - "ibm-dro"
+                - "redhat-marketplace"
+                - "db2u"
       validate:
         message: "StatefulSets must define a storageClassName."
         pattern:
