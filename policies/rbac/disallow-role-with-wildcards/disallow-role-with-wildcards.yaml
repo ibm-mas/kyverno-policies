@@ -1,7 +1,7 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: mas-disallow-role-with-wildcards
+  name: ibm-disallow-role-with-wildcards
   annotations:
     policies.kyverno.io/title: Disallow Wildcards in RBAC
     policies.kyverno.io/category: Maximo Application Suite - RBAC
@@ -22,18 +22,12 @@ spec:
           - resources:
               kinds:
                 - Role
-              namespaces:
-                - "mas-*-core"
-                - "mas-*-assist"
-                - "mas-*-facilities"
-                - "mas-*-iot"
-                - "mas-*-manage"
-                - "mas-*-monitor"
-                - "mas-*-optimizer"
-                - "mas-*-predict"
-                - "mas-*-visualinspection"
-                - "sls-*"
-                - "ibm-sls"
+              namespaceSelector:
+                matchExpressions:
+                  - key: ibm.com/kyverno
+                    operator: In
+                    values:
+                    - audit
       validate:
         message: "Use of a wildcard ('*') in a role's resources or verbs is forbidden."
         deny:

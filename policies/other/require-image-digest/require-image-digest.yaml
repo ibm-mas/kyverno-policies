@@ -1,7 +1,7 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: mas-require-image-digest
+  name: ibm-require-image-digest
   annotations:
     policies.kyverno.io/title: Require Images Use Digests
     policies.kyverno.io/category: Maximo Application Suite - Other
@@ -22,18 +22,12 @@ spec:
           - resources:
               kinds:
                 - Pod
-              namespaces:
-                - "mas-*-core"
-                - "mas-*-assist"
-                - "mas-*-facilities"
-                - "mas-*-iot"
-                - "mas-*-manage"
-                - "mas-*-monitor"
-                - "mas-*-optimizer"
-                - "mas-*-predict"
-                - "mas-*-visualinspection"
-                - "sls-*"
-                - "ibm-sls"
+              namespaceSelector:
+                matchExpressions:
+                  - key: ibm.com/kyverno
+                    operator: In
+                    values:
+                    - audit
       preconditions:
         any:
           - key: "{{ request.object.metadata.labels.\"app.kubernetes.io/managed-by\" || '' }}"

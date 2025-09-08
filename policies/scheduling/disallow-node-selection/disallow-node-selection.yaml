@@ -1,7 +1,7 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: mas-disallow-node-selection
+  name: ibm-disallow-node-selection
   annotations:
     policies.kyverno.io/title: Disallow node selection
     policies.kyverno.io/category: Maximo Application Suite - Other
@@ -26,18 +26,12 @@ spec:
           - resources:
               kinds:
                 - Pod
-              namespaces:
-                - "mas-*-core"
-                - "mas-*-assist"
-                - "mas-*-facilities"
-                - "mas-*-iot"
-                - "mas-*-manage"
-                - "mas-*-monitor"
-                - "mas-*-optimizer"
-                - "mas-*-predict"
-                - "mas-*-visualinspection"
-                - "sls-*"
-                - "ibm-sls"
+              namespaceSelector:
+                matchExpressions:
+                  - key: ibm.com/kyverno
+                    operator: In
+                    values:
+                    - audit
       validate:
         message: Setting the nodeSelector field is prohibited.
         pattern:
@@ -55,33 +49,21 @@ spec:
           - resources:
               kinds:
                 - Pod
-              namespaces:
-                - "mas-*-core"
-                - "mas-*-assist"
-                - "mas-*-facilities"
-                - "mas-*-iot"
-                - "mas-*-manage"
-                - "mas-*-monitor"
-                - "mas-*-optimizer"
-                - "mas-*-predict"
-                - "mas-*-visualinspection"
-                - "sls-*"
-                - "ibm-sls"
+              namespaceSelector:
+                matchExpressions:
+                  - key: ibm.com/kyverno
+                    operator: In
+                    values:
+                    - audit
       exclude:
         any:
           - resources:
-              namespaces:
-                - "mas-*-core"
-                - "mas-*-assist"
-                - "mas-*-facilities"
-                - "mas-*-iot"
-                - "mas-*-manage"
-                - "mas-*-monitor"
-                - "mas-*-optimizer"
-                - "mas-*-predict"
-                - "mas-*-visualinspection"
-                - "sls-*"
-                - "ibm-sls"
+              namespaceSelector:
+                matchExpressions:
+                  - key: ibm.com/kyverno
+                    operator: In
+                    values:
+                    - audit
       validate:
         message: Setting the nodeName field is prohibited.
         pattern:

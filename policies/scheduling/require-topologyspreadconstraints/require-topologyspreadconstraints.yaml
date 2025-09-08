@@ -1,7 +1,7 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: mas-require-topologyspreadconstraints
+  name: ibm-require-topologyspreadconstraints
   annotations:
     policies.kyverno.io/title: Spread Pods Across Nodes & Zones
     policies.kyverno.io/category: Maximo Application Suite - Other
@@ -33,18 +33,12 @@ spec:
               kinds:
                 - Deployment
                 - StatefulSet
-              namespaces:
-                - "mas-*-core"
-                - "mas-*-assist"
-                - "mas-*-facilities"
-                - "mas-*-iot"
-                - "mas-*-manage"
-                - "mas-*-monitor"
-                - "mas-*-optimizer"
-                - "mas-*-predict"
-                - "mas-*-visualinspection"
-                - "sls-*"
-                - "ibm-sls"
+              namespaceSelector:
+                matchExpressions:
+                  - key: ibm.com/kyverno
+                    operator: In
+                    values:
+                    - audit
       validate:
         message: "topologySpreadConstraint for kubernetes.io/hostname & topology.kubernetes.io/zone are required"
         deny:

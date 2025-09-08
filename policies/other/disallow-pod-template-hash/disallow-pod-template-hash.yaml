@@ -1,7 +1,7 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: mas-disallow-pod-template-hash
+  name: ibm-disallow-pod-template-hash
   annotations:
     pod-policies.kyverno.io/autogen-controllers: none
     policies.kyverno.io/title: Disallow Pod Template Hash
@@ -23,18 +23,12 @@ spec:
                 - Deployment
                 - StatefulSet
                 - DaemonSet
-              namespaces:
-                - "mas-*-core"
-                - "mas-*-assist"
-                - "mas-*-facilities"
-                - "mas-*-iot"
-                - "mas-*-manage"
-                - "mas-*-monitor"
-                - "mas-*-optimizer"
-                - "mas-*-predict"
-                - "mas-*-visualinspection"
-                - "sls-*"
-                - "ibm-sls"
+              namespaceSelector:
+                matchExpressions:
+                  - key: ibm.com/kyverno
+                    operator: In
+                    values:
+                    - audit
       validate:
         message: Cannot add pod-template-hash manually.
         pattern:

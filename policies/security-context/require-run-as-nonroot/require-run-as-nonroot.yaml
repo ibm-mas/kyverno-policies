@@ -1,7 +1,7 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: mas-require-run-as-nonroot
+  name: ibm-require-run-as-nonroot
   annotations:
     policies.kyverno.io/title: Require runAsNonRoot
     policies.kyverno.io/category: Maximo Application Suite - Security Context
@@ -23,18 +23,12 @@ spec:
           - resources:
               kinds:
                 - Pod
-              namespaces:
-                - "mas-*-core"
-                - "mas-*-assist"
-                - "mas-*-facilities"
-                - "mas-*-iot"
-                - "mas-*-manage"
-                - "mas-*-monitor"
-                - "mas-*-optimizer"
-                - "mas-*-predict"
-                - "mas-*-visualinspection"
-                - "sls-*"
-                - "ibm-sls"
+              namespaceSelector:
+                matchExpressions:
+                  - key: ibm.com/kyverno
+                    operator: In
+                    values:
+                    - audit
       validate:
         message: >-
           Running as root is not allowed. Either the field spec.securityContext.runAsNonRoot

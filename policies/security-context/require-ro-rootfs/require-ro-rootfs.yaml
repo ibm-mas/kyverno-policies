@@ -1,7 +1,7 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: mas-require-ro-rootfs
+  name: ibm-require-ro-rootfs
   annotations:
     policies.kyverno.io/title: Require Read-Only Root Filesystem
     policies.kyverno.io/category: Maximo Application Suite - Security Context
@@ -24,18 +24,12 @@ spec:
           - resources:
               kinds:
                 - Pod
-              namespaces:
-                - "mas-*-core"
-                - "mas-*-assist"
-                - "mas-*-facilities"
-                - "mas-*-iot"
-                - "mas-*-manage"
-                - "mas-*-monitor"
-                - "mas-*-optimizer"
-                - "mas-*-predict"
-                - "mas-*-visualinspection"
-                - "sls-*"
-                - "ibm-sls"
+              namespaceSelector:
+                matchExpressions:
+                  - key: ibm.com/kyverno
+                    operator: In
+                    values:
+                    - audit
       validate:
         message: "Root filesystem must be read-only."
         pattern:

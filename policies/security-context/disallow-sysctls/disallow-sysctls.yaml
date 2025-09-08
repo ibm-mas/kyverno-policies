@@ -1,7 +1,7 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: mas-disallow-sysctls
+  name: ibm-disallow-sysctls
   annotations:
     policies.kyverno.io/title: Restrict sysctls
     policies.kyverno.io/category: Maximo Application Suite - Security Context
@@ -26,18 +26,12 @@ spec:
           - resources:
               kinds:
                 - Pod
-              namespaces:
-                - "mas-*-core"
-                - "mas-*-assist"
-                - "mas-*-facilities"
-                - "mas-*-iot"
-                - "mas-*-manage"
-                - "mas-*-monitor"
-                - "mas-*-optimizer"
-                - "mas-*-predict"
-                - "mas-*-visualinspection"
-                - "sls-*"
-                - "ibm-sls"
+              namespaceSelector:
+                matchExpressions:
+                  - key: ibm.com/kyverno
+                    operator: In
+                    values:
+                    - audit
       validate:
         message: >-
           Setting additional sysctls above the allowed type is disallowed.

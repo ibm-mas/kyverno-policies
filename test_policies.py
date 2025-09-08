@@ -1,4 +1,6 @@
 import logging
+import os
+import yaml
 import pytest
 
 from kubernetes import config
@@ -10,29 +12,32 @@ logger = logging.getLogger()
 k8s_client = config.new_client_from_config()
 dynClient = DynamicClient(k8s_client)
 
-@pytest.mark.parametrize("policyName", [
-    # Other
-    "mas-disallow-pod-template-hash",
-    "mas-disallow-service-external-ips",
-    "mas-require-image-digest",
-    "mas-require-pod-probes",
-    "mas-require-pod-probes-unique",
-    "mas-require-pod-requests-limits",
-    "mas-require-storageclass",
-    # RBAC
-    "mas-disallow-role-with-wildcards",
-    # Scheduling
-    "mas-disallow-master-infra-tolerations",
-    "mas-disallow-node-selection",
-    "mas-require-topologyspreadconstraints",
-    # Security Context
-    "mas-disallow-privilege-escalation",
-    "mas-disallow-run-as-root-user",
-    "mas-disallow-sysctls",
-    "mas-require-drop-all-capabilities",
-    "mas-require-ro-rootfs",
-    "mas-require-run-as-nonroot",
-])
+def get_policy_names():
+    """
+    Dynamically discover all Kyverno policies in the policies directory.
+    Returns a list of policy names.
+    """
+    policyNames = []
+    policiesDir = os.path.join(os.path.dirname(__file__), 'policies')
+    
+    # Walk through all directories under policies
+    for root, _ , files in os.walk(policiesDir):
+        for file in files:
+            if file.endswith('.yaml'):
+                file_path = os.path.join(root, file)
+                try:
+                    with open(file_path, 'r') as f:
+                        policy = yaml.safe_load(f)
+                        if (policy and
+                            policy.get('kind') == 'ClusterPolicy' and
+                            policy.get('metadata', {}).get('name')):
+                            policyNames.append(policy['metadata']['name'])
+                except (yaml.YAMLError, IOError) as e:
+                    logger.warning(f"Error reading policy file {file_path}: {e}")
+    
+    return policyNames
+
+@pytest.mark.parametrize("policyName", get_policy_names())
 
 def testPolicies(policyName):
     clusterPolicies = dynClient.resources.get(
