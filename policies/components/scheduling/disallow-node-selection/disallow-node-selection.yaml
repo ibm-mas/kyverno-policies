@@ -1,0 +1,71 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: ibm-disallow-node-selection
+  annotations:
+    policies.kyverno.io/title: Disallow node selection
+    policies.kyverno.io/category: IBM - Other
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/minversion: 1.6.0
+    policies.kyverno.io/description: >-
+      The Kubernetes scheduler uses complex logic to determine the optimal placement
+      for new Pods. Users who have access to set certain fields in a Pod spec
+      may sidestep this logic which in many cases is undesirable. This policy
+      prevents users from targeting specific Nodes for scheduling of Pods by
+      prohibiting the use of the `nodeSelector` and `nodeName` fields.
+spec:
+  validationFailureAction: Audit
+  # The objective is to prevent the fields being assigned at creation time by a user,
+  # however the scheduler will apply these fields when pods are assigned to a node
+  # so background scanning must not be enabled for this policy
+  background: false
+  rules:
+    - name: restrict-nodeselector
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaceSelector:
+                matchExpressions:
+                  - key: ibm.com/kyverno
+                    operator: In
+                    values:
+                    - audit
+      validate:
+        message: Setting the nodeSelector field is prohibited.
+        pattern:
+          spec:
+            X(nodeSelector): "null"
+
+    - name: restrict-nodename
+      preconditions:
+        all:
+          - key: "{{request.operation || 'BACKGROUND'}}"
+            operator: Equals
+            value: CREATE
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaceSelector:
+                matchExpressions:
+                  - key: ibm.com/kyverno
+                    operator: In
+                    values:
+                    - audit
+      exclude:
+        any:
+          - resources:
+              namespaceSelector:
+                matchExpressions:
+                  - key: ibm.com/kyverno
+                    operator: In
+                    values:
+                    - audit
+      validate:
+        message: Setting the nodeName field is prohibited.
+        pattern:
+          spec:
+            X(nodeName): "null"

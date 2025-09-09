@@ -77,11 +77,13 @@ Note that some of these policies require additional permissions to be enabled fo
 Clone the repo and install:
 ```bash
 kustomize build policies/ | oc apply -f -
+kustomize build additional-policies/ | oc apply -f -
 ```
 
 Install directly from GitHub:
 ```bash
 kustomize build https://github.com/ibm-mas/kyverno-policies//policies/ | oc apply -f -
+kustomize build https://github.com/ibm-mas/kyverno-policies//additional-policies/ | oc apply -f -
 ```
 
 Validating Policies

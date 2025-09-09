@@ -1,0 +1,76 @@
+# https://release-1-8-0.kyverno.io/policies/other/restrict_controlplane_scheduling/restrict_controlplane_scheduling/
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: ibm-disallow-master-infra-tolerations
+  annotations:
+    policies.kyverno.io/title: Disallow master node tolerations
+    policies.kyverno.io/category: IBM - Other
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/minversion: 1.6.0
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/description: >-
+      This policy prevents users from using tolerations for master and infra nodes, ensuring that workloads
+      are scheduled on worker nodes instead. This helps maintain the stability and
+      performance of the master and infra nodes by preventing unnecessary workloads from being
+      scheduled on to the master and infra nodes.
+spec:
+  validationFailureAction: Audit
+  background: true
+  rules:
+    - name: disallow-master-tolerations
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaceSelector:
+                matchExpressions:
+                  - key: ibm.com/kyverno
+                    operator: In
+                    values:
+                    - audit
+      validate:
+        message: Should not use toleration(node-role.kubernetes.io/master) in yaml specification which schedule on master/controlplane nodes.
+        pattern:
+          spec:
+            =(tolerations):
+              - key: "!node-role.kubernetes.io/master"
+
+    - name: disallow-controlplane-tolerations
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaceSelector:
+                matchExpressions:
+                  - key: ibm.com/kyverno
+                    operator: In
+                    values:
+                    - audit
+      validate:
+        message: Should not use toleration(node-role.kubernetes.io/controlplane) in yaml specification which schedule on master/controlplane nodes.
+        pattern:
+          spec:
+            =(tolerations):
+              - key: "!node-role.kubernetes.io/control-plane"
+
+    - name: disallow-infra-tolerations
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaceSelector:
+                matchExpressions:
+                  - key: ibm.com/kyverno
+                    operator: In
+                    values:
+                    - audit
+      validate:
+        message: Should not use toleration(node-role.kubernetes.io/infra) in yaml specification which schedule on infrastructure nodes.
+        pattern:
+          spec:
+            =(tolerations):
+              - key: "!node-role.kubernetes.io/infra"

@@ -1,0 +1,6 @@
+resources:
+  - ford/require-high-availability.yaml
+  - ford/require-reasonable-pdbs.yaml
+  - ford/require-replicas-allow-disruption.yaml
+  - ford/require-pdb.yaml
+  - ford/validate-hpa-minreplicas.yaml

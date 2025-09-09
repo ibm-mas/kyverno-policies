@@ -1,0 +1,41 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: ford-validate-hpa-minreplicas
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+    policies.kyverno.io/title: Validate hpa minReplicas
+    policies.kyverno.io/category: App
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/subject: HorizontalPodAutoscaler
+    policies.kyverno.io/description: >-
+      This policy validates that HorizontalPodAutoscaler for deployment/Statefulset, should have spec.minReplicas values should be greater than 2.
+spec:
+  validationFailureAction: Audit
+  background: false
+  rules:
+    - name: validate-hpa-minreplicas
+      match:
+        resources:
+          kinds:
+            - HorizontalPodAutoscaler
+          namespaces:
+            - "mas-*-core"
+            - "mas-*-assist"
+            - "mas-*-facilities"
+            - "mas-*-iot"
+            - "mas-*-manage"
+            - "mas-*-monitor"
+            - "mas-*-optimizer"
+            - "mas-*-predict"
+            - "mas-*-visualinspection"
+            - "sls-*"
+            - "ibm-sls"
+            - "ibm-dro"
+            - "redhat-marketplace"
+            - "db2u"
+      validate:
+        message: "If an HPA is used, minReplicas needs to be at least 2."
+        pattern:
+          spec:
+            minReplicas: ">=2"
