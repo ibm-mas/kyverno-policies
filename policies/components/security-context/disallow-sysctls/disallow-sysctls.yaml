@@ -29,9 +29,7 @@ spec:
               namespaceSelector:
                 matchExpressions:
                   - key: ibm.com/kyverno
-                    operator: In
-                    values:
-                    - audit
+                    operator: Exists
       validate:
         message: >-
           Setting additional sysctls above the allowed type is disallowed.

@@ -27,9 +27,7 @@ spec:
               namespaceSelector:
                 matchExpressions:
                   - key: ibm.com/kyverno
-                    operator: In
-                    values:
-                    - audit
+                    operator: Exists
       validate:
         message: "CPU and memory resource requests and limits are required and need to be non-zero"
         pattern:

@@ -26,9 +26,7 @@ spec:
               namespaceSelector:
                 matchExpressions:
                   - key: ibm.com/kyverno
-                    operator: In
-                    values:
-                    - audit
+                    operator: Exists
       validate:
         message: "PersistentVolumeClaims must define a storageClassName."
         pattern:
@@ -43,9 +41,7 @@ spec:
               namespaceSelector:
                 matchExpressions:
                   - key: ibm.com/kyverno
-                    operator: In
-                    values:
-                    - audit
+                    operator: Exists
       validate:
         message: "StatefulSets must define a storageClassName."
         pattern:

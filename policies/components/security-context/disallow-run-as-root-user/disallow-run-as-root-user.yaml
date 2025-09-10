@@ -25,9 +25,7 @@ spec:
               namespaceSelector:
                 matchExpressions:
                   - key: ibm.com/kyverno
-                    operator: In
-                    values:
-                    - audit
+                    operator: Exists
       validate:
         message: >-
           Running as root is not allowed. The fields spec.securityContext.runAsUser,

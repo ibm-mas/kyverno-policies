@@ -27,9 +27,7 @@ spec:
               namespaceSelector:
                 matchExpressions:
                   - key: ibm.com/kyverno
-                    operator: In
-                    values:
-                    - audit
+                    operator: Exists
       validate:
         message: "Root filesystem must be read-only."
         pattern:

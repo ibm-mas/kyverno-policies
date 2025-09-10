@@ -25,9 +25,7 @@ spec:
               namespaceSelector:
                 matchExpressions:
                   - key: ibm.com/kyverno
-                    operator: In
-                    values:
-                    - audit
+                    operator: Exists
       validate:
         message: "Use of a wildcard ('*') in a role's resources or verbs is forbidden."
         deny:

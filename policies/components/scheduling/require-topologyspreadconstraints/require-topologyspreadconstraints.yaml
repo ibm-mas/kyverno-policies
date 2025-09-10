@@ -36,9 +36,7 @@ spec:
               namespaceSelector:
                 matchExpressions:
                   - key: ibm.com/kyverno
-                    operator: In
-                    values:
-                    - audit
+                    operator: Exists
       validate:
         message: "topologySpreadConstraint for kubernetes.io/hostname & topology.kubernetes.io/zone are required"
         deny:
