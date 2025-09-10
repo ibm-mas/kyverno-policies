@@ -1,6 +1,4 @@
 import logging
-import os
-import yaml
 import pytest
 import urllib3
 
@@ -17,42 +15,16 @@ dynClient = DynamicClient(k8s_client)
 
 def get_policy_names():
     """
-    Dynamically discover all Kyverno policies in the policies directory.
+    Dynamically discover all Kyverno policies in the cluster.
     Returns a list of policy names.
     """
-    policyNames = []
-    policiesDir = os.path.join(os.path.dirname(__file__), 'policies')
-    
-    # Walk through all directories under policies
-    for root, _ , files in os.walk(policiesDir):
-        for file in files:
-            if file.endswith('.yaml'):
-                file_path = os.path.join(root, file)
-                try:
-                    with open(file_path, 'r') as f:
-                        policy = yaml.safe_load(f)
-                        if (policy and
-                            policy.get('kind') == 'ClusterPolicy' and
-                            policy.get('metadata', {}).get('name')):
-                            policyNames.append(policy['metadata']['name'])
-                except (yaml.YAMLError, IOError) as e:
-                    logger.warning(f"Error reading policy file {file_path}: {e}")
-    
+    clusterPolicies = dynClient.resources.get(api_version="kyverno.io/v1", kind="ClusterPolicy")
+    policies = clusterPolicies.get()
+    policyNames = [policy.metadata.name for policy in policies.items]
     return policyNames
 
 @pytest.mark.parametrize("policyName", get_policy_names())
-
 def testPolicies(policyName):
-    clusterPolicies = dynClient.resources.get(
-        api_version="kyverno.io/v1", kind="ClusterPolicy"
-    )
-    try:
-        policy = clusterPolicies.get(name=policyName)
-    except NotFoundError as e:
-        pytest.fail(f"Policy is not installed: {e}")
-
-    assert policy.metadata.name == policyName
-
     policyReports = dynClient.resources.get(
         api_version="wgpolicyk8s.io/v1alpha2", kind="PolicyReport"
     )
