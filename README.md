@@ -3,9 +3,9 @@ kyverno-policies
 
 Policy List
 -------------------------------------------------------------------------------
-All MAS ClusterPolicies are prefixed as `ibm-` and are constrained to the standard MAS namespaces only (`ibm-*`) allowing them to be deployed into a cluster without impacting anything unrelated to Maximo Application Suite.
+All MAS ClusterPolicies are prefixed as `ibm-` and are constrained to namespaces carrying the `ibm.com/kyverno` label.  All policies are configured by default to operate in **Audit** mode only.
 
-All policies are configured to operate in **Audit** mode only.
+The **audit** and **enforce** overlays can be used to install `-audit` and `-enforce` versions of the policies that will only be applied to namespaces with `ibm.com/kyverno=audit|enforce`.
 
 ### Security Context
 - **[Disallow Priviledge Escalation](policies/security-context/disallow-priviledge-escalation/disallow-priviledge-escalation.yaml)** ensures that all permissions are dropped from our pods, with only those required added back.  This policy is based on the standard Kyverno [require-drop-all](https://github.com/kyverno/policies/tree/main/best-practices/require-drop-all) policy.
