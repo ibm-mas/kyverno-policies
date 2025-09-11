@@ -43,11 +43,16 @@ spec:
               - key: "{{ regex_match('^([5-9][0-9]|100)%$', '{{ request.object.spec.maxUnavailable || '50%'}}') }}"
                 operator: Equals
                 value: false
+
     - name: deployment-replicas-higher-than-pdb-minAvailable
       match:
         resources:
           kinds:
             - PodDisruptionBudget
+          namespaceSelector:
+            matchExpressions:
+              - key: ibm.com/kyverno
+                operator: Exists
       context:
         - name: deploymentreplicas
           apiCall:
@@ -69,11 +74,16 @@ spec:
               - key: "{{ request.object.spec.minAvailable }}"
                 operator: GreaterThanOrEquals
                 value: "{{ deploymentreplicas[0] }}"
+
     - name: statefulset-replicas-higher-than-pdb-minAvailable
       match:
         resources:
           kinds:
             - PodDisruptionBudget
+          namespaceSelector:
+            matchExpressions:
+              - key: ibm.com/kyverno
+                operator: Exists
       context:
         - name: statefulsetreplicas
           apiCall:
@@ -95,11 +105,16 @@ spec:
               - key: "{{ request.object.spec.minAvailable }}"
                 operator: GreaterThanOrEquals
                 value: "{{ statefulsetreplicas[0] }}"
+
     - name: replicaset-replicas-higher-than-pdb-minAvailable
       match:
         resources:
           kinds:
             - PodDisruptionBudget
+          namespaceSelector:
+            matchExpressions:
+              - key: ibm.com/kyverno
+                operator: Exists
       context:
         - name: replicasetreplicas
           apiCall:
@@ -121,11 +136,16 @@ spec:
               - key: "{{ request.object.spec.minAvailable }}"
                 operator: GreaterThanOrEquals
                 value: "{{ replicasetreplicas[0] }}"
+
     - name: pdb-maxUnavailable-zero
       match:
         resources:
           kinds:
             - PodDisruptionBudget
+          namespaceSelector:
+            matchExpressions:
+              - key: ibm.com/kyverno
+                operator: Exists
       context:
         - name: deploymentreplicas
           apiCall:
@@ -161,14 +181,16 @@ spec:
             - key: "{{ request.object.spec.maxUnavailable || '' }}"
               operator: Equals
               value: 0
+
     - name: deny-pdb-without-minavailable-or-maxunavailable
       match:
         resources:
           kinds:
             - PodDisruptionBudget
           namespaceSelector:
-            matchLabels:
-              ford.com/app-id: "*"
+            matchExpressions:
+              - key: ibm.com/kyverno
+                operator: Exists
       validate:
         message: "PodDisruptionBudget must contain either 'minAvailable' or 'maxUnavailable' specification."
         anyPattern:
