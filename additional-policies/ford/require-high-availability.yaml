@@ -3,9 +3,9 @@ kind: ClusterPolicy
 metadata:
   name: ford-require-high-availability
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    pod-policies.kyverno.io/autogen-controllers: none
     policies.kyverno.io/title: Require Multiple Replicas
-    policies.kyverno.io/category: App
+    policies.kyverno.io/category: Ford - App
     policies.kyverno.io/severity: high
     policies.kyverno.io/subject: Deployment
     policies.kyverno.io/description: >-
@@ -14,16 +14,14 @@ metadata:
       have more than one replica.
 spec:
   validationFailureAction: Audit
-  background: false
+  background: true
   rules:
     - name: deployment-has-multiple-replicas
       match:
         resources:
           kinds:
             - Deployment
-            - Deployment/scale
             - StatefulSet
-            - StatefulSet/scale
           namespaceSelector:
             matchExpressions:
               - key: ibm.com/kyverno

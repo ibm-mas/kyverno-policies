@@ -3,9 +3,8 @@ kind: ClusterPolicy
 metadata:
   name: ford-require-reasonable-pdbs
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
     policies.kyverno.io/title: Require Reasonable PDBs
-    policies.kyverno.io/category: Best Practices
+    policies.kyverno.io/category: Ford - Best Practices
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: PodDisruptionBudget
     policies.kyverno.io/description: >-

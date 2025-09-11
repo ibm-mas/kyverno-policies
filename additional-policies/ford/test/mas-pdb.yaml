@@ -1,0 +1,11 @@
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: coreapi-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 25%
+  selector:
+    matchLabels:
+      app: fordkyverno-coreapi

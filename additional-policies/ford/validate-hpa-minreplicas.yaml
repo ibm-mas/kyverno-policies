@@ -3,9 +3,8 @@ kind: ClusterPolicy
 metadata:
   name: ford-validate-hpa-minreplicas
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
-    policies.kyverno.io/title: Validate hpa minReplicas
-    policies.kyverno.io/category: App
+    policies.kyverno.io/title: Validate HPA Minimum Replicas
+    policies.kyverno.io/category: Ford - App
     policies.kyverno.io/severity: high
     policies.kyverno.io/subject: HorizontalPodAutoscaler
     policies.kyverno.io/description: >-

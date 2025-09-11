@@ -4,18 +4,16 @@ kind: ClusterPolicy
 metadata:
   name: ford-require-pdb
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
     policies.kyverno.io/title: Require PodDisruptionBudget
-    policies.kyverno.io/category: Sample, EKS Best Practices
+    policies.kyverno.io/category: Ford - EKS Best Practices
     policies.kyverno.io/minversion: 1.6.0
     kyverno.io/kyverno-version: 1.6.2
     kyverno.io/kubernetes-version: "1.23"
     policies.kyverno.io/subject: Deployment, PodDisruptionBudget
     policies.kyverno.io/description: >-
       PodDisruptionBudget resources are useful to ensuring minimum availability
-      is maintained at all times. This policy checks all incoming Deployments and StatefulSets
-      to ensure they have a matching, preexisting PodDisruptionBudget.
-      Note: This policy must be run in `enforce` mode to ensure accuracy.
+      is maintained at all times. This policy checks all Deployments and StatefulSets
+      to ensure they have a matching, pre-existing PodDisruptionBudget.
 spec:
   validationFailureAction: Audit
   background: true
@@ -26,15 +24,12 @@ spec:
           kinds:
             - Deployment
             - StatefulSet
-        namespaceSelector:
-          matchExpressions:
-            - key: ibm.com/kyverno
-              operator: Exists
+          namespaceSelector:
+            matchExpressions:
+              - key: ibm.com/kyverno
+                operator: Exists
       preconditions:
         all:
-          - key: "{{request.operation || 'BACKGROUND'}}"
-            operator: Equals
-            value: CREATE
           - key: "{{ request.object.spec.replicas }}"
             operator: GreaterThanOrEquals
             value: 2
