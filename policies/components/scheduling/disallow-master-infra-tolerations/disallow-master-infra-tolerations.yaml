@@ -2,7 +2,7 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: mas-disallow-master-infra-tolerations
+  name: ibm-disallow-master-infra-tolerations
   annotations:
     policies.kyverno.io/title: Disallow master node tolerations
     policies.kyverno.io/category: IBM - Other
@@ -24,21 +24,10 @@ spec:
           - resources:
               kinds:
                 - Pod
-              namespaces:
-                - "mas-*-core"
-                - "mas-*-assist"
-                - "mas-*-facilities"
-                - "mas-*-iot"
-                - "mas-*-manage"
-                - "mas-*-monitor"
-                - "mas-*-optimizer"
-                - "mas-*-predict"
-                - "mas-*-visualinspection"
-                - "sls-*"
-                - "ibm-sls"
-                - "ibm-dro"
-                - "redhat-marketplace"
-                - "db2u"
+              namespaceSelector:
+                matchExpressions:
+                  - key: ibm.com/kyverno
+                    operator: Exists
       validate:
         message: Should not use toleration(node-role.kubernetes.io/master) in yaml specification which schedule on master/controlplane nodes.
         pattern:
@@ -52,21 +41,10 @@ spec:
           - resources:
               kinds:
                 - Pod
-              namespaces:
-                - "mas-*-core"
-                - "mas-*-assist"
-                - "mas-*-facilities"
-                - "mas-*-iot"
-                - "mas-*-manage"
-                - "mas-*-monitor"
-                - "mas-*-optimizer"
-                - "mas-*-predict"
-                - "mas-*-visualinspection"
-                - "sls-*"
-                - "ibm-sls"
-                - "ibm-dro"
-                - "redhat-marketplace"
-                - "db2u"
+              namespaceSelector:
+                matchExpressions:
+                  - key: ibm.com/kyverno
+                    operator: Exists
       validate:
         message: Should not use toleration(node-role.kubernetes.io/controlplane) in yaml specification which schedule on master/controlplane nodes.
         pattern:
@@ -80,21 +58,10 @@ spec:
           - resources:
               kinds:
                 - Pod
-              namespaces:
-                - "mas-*-core"
-                - "mas-*-assist"
-                - "mas-*-facilities"
-                - "mas-*-iot"
-                - "mas-*-manage"
-                - "mas-*-monitor"
-                - "mas-*-optimizer"
-                - "mas-*-predict"
-                - "mas-*-visualinspection"
-                - "sls-*"
-                - "ibm-sls"
-                - "ibm-dro"
-                - "redhat-marketplace"
-                - "db2u"
+              namespaceSelector:
+                matchExpressions:
+                  - key: ibm.com/kyverno
+                    operator: Exists
       validate:
         message: Should not use toleration(node-role.kubernetes.io/infra) in yaml specification which schedule on infrastructure nodes.
         pattern:

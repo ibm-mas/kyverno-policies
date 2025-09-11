@@ -13,48 +13,18 @@ urllib3.disable_warnings()
 k8s_client = config.new_client_from_config()
 dynClient = DynamicClient(k8s_client)
 
-@pytest.mark.parametrize("policyName", [
-    # Other
-    "mas-disallow-pod-template-hash",
-    "mas-disallow-service-external-ips",
-    "mas-require-image-digest",
-    "mas-require-pod-probes",
-    "mas-require-pod-probes-unique",
-    "mas-require-pod-requests-limits",
-    "mas-require-storageclass",
-    # RBAC
-    "mas-disallow-role-with-wildcards",
-    # Scheduling
-    "mas-disallow-master-infra-tolerations",
-    "mas-disallow-node-selection",
-    "mas-require-topologyspreadconstraints",
-    # Security Context
-    "mas-disallow-privilege-escalation",
-    "mas-disallow-run-as-root-user",
-    "mas-disallow-sysctls",
-    "mas-require-drop-all-capabilities",
-    "mas-require-ro-rootfs",
-    "mas-require-run-as-nonroot",
+def get_policy_names():
+    """
+    Dynamically discover all Kyverno policies in the cluster.
+    Returns a list of policy names.
+    """
+    clusterPolicies = dynClient.resources.get(api_version="kyverno.io/v1", kind="ClusterPolicy")
+    policies = clusterPolicies.get()
+    policyNames = [policy.metadata.name for policy in policies.items]
+    return policyNames
 
-    # Additional Policies
-    "ford-require-high-availability",
-    "ford-require-pdb",
-    "ford-require-reasonable-pdbs",
-    "ford-require-replicas-allow-disruption",
-    "ford-validate-hpa-minreplicas",
-])
-
+@pytest.mark.parametrize("policyName", get_policy_names())
 def testPolicies(policyName):
-    clusterPolicies = dynClient.resources.get(
-        api_version="kyverno.io/v1", kind="ClusterPolicy"
-    )
-    try:
-        policy = clusterPolicies.get(name=policyName)
-    except NotFoundError as e:
-        pytest.fail(f"Policy is not installed: {e}")
-
-    assert policy.metadata.name == policyName
-
     policyReports = dynClient.resources.get(
         api_version="wgpolicyk8s.io/v1alpha2", kind="PolicyReport"
     )

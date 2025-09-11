@@ -10,3 +10,9 @@ patches:
       - op: replace
         path: /spec/validationFailureAction
         value: Audit
+      - op: replace
+        path: /spec/rules/0/match/any/0/resources/namespaceSelector/matchExpressions/0
+        value:
+          key: ibm.com/kyverno
+          operator: In
+          value: ['audit']

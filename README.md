@@ -3,9 +3,9 @@ kyverno-policies
 
 Policy List
 -------------------------------------------------------------------------------
-All MAS ClusterPolicies are prefixed as `mas-` and are constrained to the standard MAS namespaces only (`mas-*`) allowing them to be deployed into a cluster without impacting anything unrelated to Maximo Application Suite.
+All MAS ClusterPolicies are prefixed as `ibm-` and are constrained to namespaces carrying the `ibm.com/kyverno` label.  All policies are configured by default to operate in **Audit** mode only.
 
-All policies are configured to operate in **Audit** mode only.
+The **audit** and **enforce** overlays can be used to install `-audit` and `-enforce` versions of the policies that will only be applied to namespaces with `ibm.com/kyverno=audit|enforce`.
 
 ### Security Context
 - **[Disallow Priviledge Escalation](policies/security-context/disallow-priviledge-escalation/disallow-priviledge-escalation.yaml)** ensures that all permissions are dropped from our pods, with only those required added back.  This policy is based on the standard Kyverno [require-drop-all](https://github.com/kyverno/policies/tree/main/best-practices/require-drop-all) policy.
@@ -95,23 +95,23 @@ pytest -q -r A test_policies.py
 
 ...
 
-PASSED test_policies.py::testPolicies[mas-disallow-pod-template-hash]
-PASSED test_policies.py::testPolicies[mas-disallow-service-external-ips]
-PASSED test_policies.py::testPolicies[mas-require-image-digest]
-PASSED test_policies.py::testPolicies[mas-require-pod-probes-unique]
-PASSED test_policies.py::testPolicies[mas-require-pod-requests-limits]
-PASSED test_policies.py::testPolicies[mas-require-storageclass]
-PASSED test_policies.py::testPolicies[mas-disallow-master-infra-tolerations]
-PASSED test_policies.py::testPolicies[mas-disallow-node-selection]
-PASSED test_policies.py::testPolicies[mas-disallow-run-as-root-user]
-PASSED test_policies.py::testPolicies[mas-disallow-sysctls]
-PASSED test_policies.py::testPolicies[mas-require-drop-all]
-PASSED test_policies.py::testPolicies[mas-require-ro-rootfs]
-FAILED test_policies.py::testPolicies[mas-require-pod-probes] - AssertionError: One or more resources failed to comply with Kyverno policy 'mas-require-pod-probes': ['Deployment:mas-fvtrelease-core/fvtrelease-entitymgr-scimcfg', 'Deployment:mas-fvtrelease-core/fvtrelease-entitymgr-kafkacfg', 'Pod:mas-fvtrelease-core/fvtrelea...
-FAILED test_policies.py::testPolicies[mas-disallow-role-with-wildcards] - AssertionError: One or more resources failed to comply with Kyverno policy 'mas-disallow-role-with-wildcards': ['Role:mas-fvtrelease-core/ibm-mas.v9.1.1-ibm-mas-e-bSj8DM1pnhMr18FKNvEcJrxUOiLm4A6qaTxcmK', 'Role:mas-fvtrelease-core/ibm-mas-mobileapi', 'Role:mas-fv...
-FAILED test_policies.py::testPolicies[mas-require-topologyspreadconstraints] - AssertionError: One or more resources failed to comply with Kyverno policy 'mas-require-topologyspreadconstraints': ['Deployment:mas-fvtrelease-core/fvtrelease-coreapi']
-FAILED test_policies.py::testPolicies[mas-disallow-privilege-escalation] - AssertionError: One or more resources failed to comply with Kyverno policy 'mas-disallow-privilege-escalation': ['ReplicaSet:mas-fvtrelease-core/ibm-truststore-mgr-controller-manager-68fcf96b9', 'Job:mas-fvtrelease-core/fvtrelease-truststore-worker', 'ReplicaSet...
-FAILED test_policies.py::testPolicies[mas-require-run-as-nonroot] - AssertionError: One or more resources failed to comply with Kyverno policy 'mas-require-run-as-nonroot': ['CronJob:mas-fvtrelease-core/fvtrelease-accapppoints', 'Deployment:mas-fvtrelease-core/fvtrelease-mobileapi', 'CronJob:mas-fvtrelease-core/fvtrelease-adopti...
+PASSED test_policies.py::testPolicies[ibm-disallow-pod-template-hash]
+PASSED test_policies.py::testPolicies[ibm-disallow-service-external-ips]
+PASSED test_policies.py::testPolicies[ibm-require-image-digest]
+PASSED test_policies.py::testPolicies[ibm-require-pod-probes-unique]
+PASSED test_policies.py::testPolicies[ibm-require-pod-requests-limits]
+PASSED test_policies.py::testPolicies[ibm-require-storageclass]
+PASSED test_policies.py::testPolicies[ibm-disallow-master-infra-tolerations]
+PASSED test_policies.py::testPolicies[ibm-disallow-node-selection]
+PASSED test_policies.py::testPolicies[ibm-disallow-run-as-root-user]
+PASSED test_policies.py::testPolicies[ibm-disallow-sysctls]
+PASSED test_policies.py::testPolicies[ibm-require-drop-all]
+PASSED test_policies.py::testPolicies[ibm-require-ro-rootfs]
+FAILED test_policies.py::testPolicies[ibm-require-pod-probes] - AssertionError: One or more resources failed to comply with Kyverno policy 'ibm-require-pod-probes': ['Deployment:mas-fvtrelease-core/fvtrelease-entitymgr-scimcfg', 'Deployment:mas-fvtrelease-core/fvtrelease-entitymgr-kafkacfg', 'Pod:mas-fvtrelease-core/fvtrelea...
+FAILED test_policies.py::testPolicies[ibm-disallow-role-with-wildcards] - AssertionError: One or more resources failed to comply with Kyverno policy 'ibm-disallow-role-with-wildcards': ['Role:mas-fvtrelease-core/ibm-mas.v9.1.1-ibm-mas-e-bSj8DM1pnhMr18FKNvEcJrxUOiLm4A6qaTxcmK', 'Role:mas-fvtrelease-core/ibm-mas-mobileapi', 'Role:mas-fv...
+FAILED test_policies.py::testPolicies[ibm-require-topologyspreadconstraints] - AssertionError: One or more resources failed to comply with Kyverno policy 'ibm-require-topologyspreadconstraints': ['Deployment:mas-fvtrelease-core/fvtrelease-coreapi']
+FAILED test_policies.py::testPolicies[ibm-disallow-privilege-escalation] - AssertionError: One or more resources failed to comply with Kyverno policy 'ibm-disallow-privilege-escalation': ['ReplicaSet:mas-fvtrelease-core/ibm-truststore-mgr-controller-manager-68fcf96b9', 'Job:mas-fvtrelease-core/fvtrelease-truststore-worker', 'ReplicaSet...
+FAILED test_policies.py::testPolicies[ibm-require-run-as-nonroot] - AssertionError: One or more resources failed to comply with Kyverno policy 'ibm-require-run-as-nonroot': ['CronJob:mas-fvtrelease-core/fvtrelease-accapppoints', 'Deployment:mas-fvtrelease-core/fvtrelease-mobileapi', 'CronJob:mas-fvtrelease-core/fvtrelease-adopti...
 5 failed, 12 passed in 24.36s
 ```
 
@@ -120,22 +120,22 @@ Auditing Policies
 ```bash
 oc get clusterpolicies
 NAME                                    ADMISSION   BACKGROUND   READY   AGE    MESSAGE
-mas-disallow-master-infra-tolerations   true        true         True    157m   Ready
-mas-disallow-node-selection             true        true         True    65m    Ready
-mas-disallow-pod-template-hash          true        true         True    54m    Ready
-mas-disallow-privilege-escalation       true        true         True    156m   Ready
-mas-disallow-role-with-wildcards        true        true         True    156m   Ready
-mas-disallow-run-as-root-user           true        true         True    156m   Ready
-mas-disallow-service-external-ips       true        true         True    48m    Ready
-mas-disallow-sysctls                    true        true         True    34m    Ready
-mas-require-drop-all-capabilities       true        true         True    156m   Ready
-mas-require-image-digest                true        true         True    156m   Ready
-mas-require-pod-probes                  true        true         True    156m   Ready
-mas-require-requests-limits             true        true         True    156m   Ready
-mas-require-ro-rootfs                   true        true         True    11m    Ready
-mas-require-run-as-nonroot              true        true         True    156m   Ready
-mas-require-storageclass                true        true         True    85m    Ready
-mas-require-topologyspreadconstraints   true        true         True    97m    Ready
+ibm-disallow-master-infra-tolerations   true        true         True    157m   Ready
+ibm-disallow-node-selection             true        true         True    65m    Ready
+ibm-disallow-pod-template-hash          true        true         True    54m    Ready
+ibm-disallow-privilege-escalation       true        true         True    156m   Ready
+ibm-disallow-role-with-wildcards        true        true         True    156m   Ready
+ibm-disallow-run-as-root-user           true        true         True    156m   Ready
+ibm-disallow-service-external-ips       true        true         True    48m    Ready
+ibm-disallow-sysctls                    true        true         True    34m    Ready
+ibm-require-drop-all-capabilities       true        true         True    156m   Ready
+ibm-require-image-digest                true        true         True    156m   Ready
+ibm-require-pod-probes                  true        true         True    156m   Ready
+ibm-require-requests-limits             true        true         True    156m   Ready
+ibm-require-ro-rootfs                   true        true         True    11m    Ready
+ibm-require-run-as-nonroot              true        true         True    156m   Ready
+ibm-require-storageclass                true        true         True    85m    Ready
+ibm-require-topologyspreadconstraints   true        true         True    97m    Ready
 ```
 
 ```bash

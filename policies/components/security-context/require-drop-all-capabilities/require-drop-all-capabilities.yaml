@@ -1,7 +1,7 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: mas-require-drop-all-capabilities
+  name: ibm-require-drop-all-capabilities
   annotations:
     policies.kyverno.io/title: Drop All Capabilities
     policies.kyverno.io/category: IBM - Security Context
@@ -24,21 +24,10 @@ spec:
           - resources:
               kinds:
                 - Pod
-              namespaces:
-                - "mas-*-core"
-                - "mas-*-assist"
-                - "mas-*-facilities"
-                - "mas-*-iot"
-                - "mas-*-manage"
-                - "mas-*-monitor"
-                - "mas-*-optimizer"
-                - "mas-*-predict"
-                - "mas-*-visualinspection"
-                - "sls-*"
-                - "ibm-sls"
-                - "ibm-dro"
-                - "redhat-marketplace"
-                - "db2u"
+              namespaceSelector:
+                matchExpressions:
+                  - key: ibm.com/kyverno
+                    operator: Exists
       validate:
         message: >-
           Containers must drop `ALL` capabilities.
