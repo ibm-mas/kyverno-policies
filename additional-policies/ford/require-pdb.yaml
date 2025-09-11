@@ -22,15 +22,14 @@ spec:
   rules:
     - name: require-pdb
       match:
-        any:
-          - resources:
-              kinds:
-                - Deployment
-                - StatefulSet
-            namespaceSelector:
-              matchExpressions:
-                - key: ibm.com/kyverno
-                  operator: Exists
+        resources:
+          kinds:
+            - Deployment
+            - StatefulSet
+        namespaceSelector:
+          matchExpressions:
+            - key: ibm.com/kyverno
+              operator: Exists
       preconditions:
         all:
           - key: "{{request.operation || 'BACKGROUND'}}"
