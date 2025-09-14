@@ -1,3 +1,4 @@
+import argparse
 import sys
 import urllib3
 
@@ -9,59 +10,78 @@ urllib3.disable_warnings()
 k8s_client = config.new_client_from_config()
 dynClient = DynamicClient(k8s_client)
 
-policyNames = [
-    # Other
-    "mas-disallow-pod-template-hash",
-    "mas-disallow-service-external-ips",
-    "mas-require-image-digest",
-    "mas-require-pod-probes",
-    "mas-require-pod-probes-unique",
-    "mas-require-pod-requests-limits",
-    "mas-require-storageclass",
-    # RBAC
-    "mas-disallow-role-with-wildcards",
-    # Scheduling
-    "mas-disallow-master-infra-tolerations",
-    "mas-disallow-node-selection",
-    "mas-require-topologyspreadconstraints",
-    # Security Context
-    "mas-disallow-privilege-escalation",
-    "mas-disallow-run-as-root-user",
-    "mas-disallow-sysctls",
-    "mas-require-drop-all-capabilities",
-    "mas-require-ro-rootfs",
-    "mas-require-run-as-nonroot",
+parser = argparse.ArgumentParser()
+parser.add_argument("-n", "--namespace", required=False, default=None)
+args = parser.parse_args()
 
-    # Additional Policies
-    "ford-require-high-availability",
-    "ford-require-pdb",
-    "ford-require-reasonable-pdbs",
-    "ford-require-replicas-allow-disruption",
-    "ford-validate-hpa-minreplicas",
-]
+def get_policy_names():
+    """
+    Dynamically discover all Kyverno policies in the cluster.
+    Returns a list of policy names.
+    """
+    clusterPolicies = dynClient.resources.get(api_version="kyverno.io/v1", kind="ClusterPolicy")
+    policies = clusterPolicies.get()
+    policyNames = [policy.metadata.name for policy in policies.items]
+    return policyNames
 
 
 clusterPolicies = dynClient.resources.get(
     api_version="kyverno.io/v1", kind="ClusterPolicy"
 )
 
-failures = {}
-for policyName in policyNames:
-    try:
-        policy = clusterPolicies.get(name=policyName)
-    except NotFoundError as e:
-        print(f"Policy is not installed: {e}", file=sys.stderr)
+policyNames = get_policy_names()
+failuresByPolicyRule = {}
+failuresByNamespace = {}
 
-    policyReports = dynClient.resources.get(
-        api_version="wgpolicyk8s.io/v1alpha2", kind="PolicyReport"
-    )
-    reports = policyReports.get(namespace="redhat-marketplace")
-    for report in reports.items:
-        resourceId = f"{report.scope.kind}:{report.scope.namespace}/{report.scope.name}"
-        for result in report.results:
-            if result.policy == policyName and result.result == "fail":
-                if policyName not in failures:
-                    failures[policyName] = []
-                if result.rule not in failures[policyName]:
-                    failures[policyName].append(result.rule)
-                    print(f"{policyName} {result.rule} failed ({resourceId})")
+policyReports = dynClient.resources.get(
+    api_version="wgpolicyk8s.io/v1alpha2", kind="PolicyReport"
+)
+reports = policyReports.get(namespace=args.namespace)
+for report in reports.items:
+    resourceId = f"{report.scope.kind}:{report.scope.namespace}/{report.scope.name}"
+    resourceIdNoNamespace = f"{report.scope.kind}:{report.scope.name}"
+    for result in report.results:
+        # result.rule = result.rule.replace("autogen-", "")
+        policyRuleName = f"{result.policy}/{result.rule}"
+        if result.result == "fail":
+            if result.policy not in failuresByPolicyRule:
+                failuresByPolicyRule[result.policy] = {result.rule: []}
+            if result.rule not in failuresByPolicyRule[result.policy]:
+                failuresByPolicyRule[result.policy][result.rule] = []
+
+            failuresByPolicyRule[result.policy][result.rule].append(resourceId)
+
+            if report.scope.namespace not in failuresByNamespace:
+                failuresByNamespace[report.scope.namespace] = {policyRuleName: []}
+            if policyRuleName not in failuresByNamespace[report.scope.namespace]:
+                failuresByNamespace[report.scope.namespace][policyRuleName] = []
+
+            failuresByNamespace[report.scope.namespace][policyRuleName].append(resourceIdNoNamespace)
+
+
+# print()
+# print()
+# print("Failures by Policy")
+# print("================================================================================")
+# for policyName in failuresByPolicyRule:
+#     print()
+#     print(policyName)
+#     print("--------------------------------------------------------------------------------")
+#     for policyRule in failuresByPolicyRule[policyName]:
+#         print()
+#         print(f"{policyRule} ({len(failuresByPolicyRule[policyName][policyRule])} failures)")
+#         for resource in failuresByPolicyRule[policyName][policyRule]:
+#             print(f"- {resource}")
+
+print()
+print()
+print("Failures by Namespace")
+print("================================================================================")
+for namespace in failuresByNamespace:
+    print()
+    print(namespace)
+    print("--------------------------------------------------------------------------------")
+    for policyRule in failuresByNamespace[namespace]:
+        print(f"{policyRule} ({len(failuresByNamespace[namespace][policyRule])} failures)")
+        for resource in failuresByNamespace[namespace][policyRule]:
+            print(f"- {resource}")

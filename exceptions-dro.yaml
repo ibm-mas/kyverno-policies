@@ -1,0 +1,55 @@
+---
+apiVersion: kyverno.io/v2
+kind: PolicyException
+metadata:
+  name: dro-exceptions
+  namespace: redhat-marketplace
+spec:
+  exceptions:
+    # Requests, Limits & Probes
+    - policyName: ibm-require-pod-requests-limits
+      ruleNames:
+        - validate-resources
+        - cronjob-validate-resources
+        - autogen-validate-resources
+        - autogen-cronjob-validate-resources
+    - policyName: ibm-require-pod-probes
+      ruleNames:
+        - validate-probes
+    - policyName: ibm-require-pod-probes-unique
+      ruleNames:
+        - validate-probes-are-unique
+
+    # Read-Only Root Filesystem
+    - policyName: ibm-require-ro-rootfs
+      ruleNames:
+        - validate-readOnlyRootFilesystem
+        - cronjob-validate-readOnlyRootFilesystem
+        - autogen-validate-readOnlyRootFilesystem
+        - autogen-cronjob-validate-readOnlyRootFilesystem
+
+    # HA & PDBs
+    - policyName: ford-require-high-availability
+      ruleNames:
+        - deployment-has-multiple-replicas
+    - policyName: ford-require-pdb
+      ruleNames:
+        - require-pdb
+
+    # Security Context
+    - policyName: ibm-disallow-privilege-escalation
+      ruleNames:
+        - privilege-escalation
+        - autogen-privilege-escalation
+    - policyName: ibm-require-drop-all-capabilities
+      ruleNames:
+        - require-drop-all
+        - autogen-require-drop-all
+    - policyName: ibm-require-topologyspreadconstraints
+      ruleNames:
+        - spread-pods
+  match:
+    any:
+      - resources:
+          namespaces:
+            - redhat-marketplace

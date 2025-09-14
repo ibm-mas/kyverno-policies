@@ -1,0 +1,38 @@
+---
+apiVersion: kyverno.io/v2
+kind: PolicyException
+metadata:
+  name: db2u-exceptions
+  namespace: db2u
+spec:
+  exceptions:
+    # Read-Only Root Filesystem
+    - policyName: ibm-require-ro-rootfs
+      ruleNames:
+        - autogen-validate-readOnlyRootFilesystem
+        - validate-readOnlyRootFilesystem
+        - autogen-cronjob-validate-readOnlyRootFilesystem
+
+    # HA
+    - policyName: ford-require-high-availability
+      ruleNames:
+        - deployment-has-multiple-replicas
+
+    # Security Context
+    - policyName: ibm-disallow-privilege-escalation
+      ruleNames:
+        - privilege-escalation
+        - autogen-privilege-escalation
+    - policyName: ibm-disallow-run-as-root-user
+      ruleNames:
+        - run-as-non-root-user
+        - autogen-run-as-non-root-user
+    - policyName: ibm-require-run-as-nonroot
+      ruleNames:
+        - run-as-non-root
+        - autogen-run-as-non-root
+  match:
+    any:
+      - resources:
+          namespaces:
+            - db2u

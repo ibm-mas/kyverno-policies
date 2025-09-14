@@ -1,0 +1,29 @@
+---
+apiVersion: kyverno.io/v2
+kind: PolicyException
+metadata:
+  name: ibm-require-ro-rootfs-exception
+  namespace: mas-fordkyverno-core
+spec:
+  exceptions:
+    - policyName: ibm-require-ro-rootfs
+      ruleNames:
+        - validate-readOnlyRootFilesystem
+        - cronjob-validate-readOnlyRootFilesystem
+        - autogen-validate-readOnlyRootFilesystem
+        - autogen-cronjob-validate-readOnlyRootFilesystem
+  match:
+    any:
+      - resources:
+          kinds:
+            - Deployment
+            - StatefulSet
+            - CronJob
+            - Job
+            - ReplicaSet
+            - Pod
+          namespaces:
+            - mas-fordkyverno-manage
+            - mas-fordkyverno-core
+            - mas-fordkyverno-visualinspection
+            - sls-fordkyverno
