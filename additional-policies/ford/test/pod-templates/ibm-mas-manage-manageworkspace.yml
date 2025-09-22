@@ -1,0 +1,17 @@
+# podTemplates
+# =============================================================================
+# The podTemplates target the following Ford kyverno policies:
+# - ford-caas-audit/policies/require-high-availability.yaml
+podTemplates:
+  - name: all
+    replicas: 2
+  - name: ui
+    replicas: 2
+  - name: mea
+    replicas: 2
+  - name: rpt
+    replicas: 2
+  - name: cron
+    replicas: 2
+  - name: jms
+    replicas: 2

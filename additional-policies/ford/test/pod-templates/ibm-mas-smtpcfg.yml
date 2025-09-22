@@ -1,0 +1,7 @@
+# podTemplates
+# =============================================================================
+# The podTemplates target the following Ford kyverno policies:
+# - ford-caas-audit/policies/require-high-availability.yaml
+podTemplates:
+  - name: sendmailapi
+    replicas: 2

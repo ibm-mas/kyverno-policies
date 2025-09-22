@@ -1,0 +1,9 @@
+# podTemplates
+# =============================================================================
+# The podTemplates target the following Ford kyverno policies:
+# - ford-caas-audit/policies/require-high-availability.yaml
+podTemplates:
+  - name: coreidp
+    replicas: 2
+  - name: coreidp-login
+    replicas: 2

@@ -1,0 +1,430 @@
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-admin-dashboard-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-admin-dashboard"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-adoptionusageapi-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-adoptionusageapi"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-catalogapi-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-catalogapi"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-catalogmgr-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-catalogmgr"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-coreapi-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-coreapi"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-coreidp-login-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-coreidp-login"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-coreidp-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-coreidp"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-entitymgr-addons-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-entitymgr-addons"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-entitymgr-appcfg-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-entitymgr-appcfg"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-entitymgr-bascfg-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-entitymgr-bascfg"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-entitymgr-coreidp-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-entitymgr-coreidp"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-entitymgr-idpcfg-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-entitymgr-idpcfg"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-entitymgr-jdbccfg-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-entitymgr-jdbccfg"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-entitymgr-kafkacfg-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-entitymgr-kafkacfg"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-entitymgr-mongocfg-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-entitymgr-mongocfg"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-entitymgr-objectstorage-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-entitymgr-objectstorage"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-entitymgr-pushnotificationcfg-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-entitymgr-pushnotificationcfg"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-entitymgr-scimcfg-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-entitymgr-scimcfg"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-entitymgr-slscfg-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-entitymgr-slscfg"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-entitymgr-smtpcfg-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-entitymgr-smtpcfg"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-entitymgr-suite-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-entitymgr-suite"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-entitymgr-watsonstudiocfg-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-entitymgr-watsonstudiocfg"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-entitymgr-ws-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-entitymgr-ws"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-graphite-configuration-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-graphite-configuration"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-groupsync-coordinator-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-groupsync-coordinator"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-homepage-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-homepage"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-internalapi-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-internalapi"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-licensing-mediator-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-licensing-mediator"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-milestonesapi-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-milestonesapi"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-mobileapi-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-mobileapi"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-monagent-mas-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-monagent-mas"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-navigator-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-navigator"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-operator-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ibm-mas
+      app.kubernetes.io/managed-by: olm
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-push-notification-service-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-push-notification-service"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-scimsync-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-scimsync"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-sendmailapi-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-sendmailapi"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-truststore-mgr-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ibm-truststore-mgr
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-usersync-coordinator-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-usersync-coordinator"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-core-workspace-coordinator-pdb
+  namespace: mas-fordkyverno-core
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: "fordkyverno-workspace-coordinator"

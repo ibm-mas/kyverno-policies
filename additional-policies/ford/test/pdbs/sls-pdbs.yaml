@@ -1,0 +1,34 @@
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: sls-api-licensing-pdb
+  namespace: sls-fordkyverno
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sls-api-licensing
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: sls-controller-mgr-pdb
+  namespace: sls-fordkyverno
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ibm-sls
+      app.kubernetes.io/managed-by: olm
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: sls-truststore-mgr-pdb
+  namespace: sls-fordkyverno
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ibm-truststore-mgr

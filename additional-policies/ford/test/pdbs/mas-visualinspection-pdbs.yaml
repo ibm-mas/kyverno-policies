@@ -1,0 +1,134 @@
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-visualinspection-auth-pdb
+  namespace: mas-fordkyverno-visualinspection
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: auth
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-visualinspection-dataset-feature-pdb
+  namespace: mas-fordkyverno-visualinspection
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: dataset-feature
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-visualinspection-dataset-summarization-pdb
+  namespace: mas-fordkyverno-visualinspection
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: dataset-summarization
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-visualinspection-dlm-policy-pdb
+  namespace: mas-fordkyverno-visualinspection
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+
+      app.kubernetes.io/name: dlm-policy
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-visualinspection-edgeman-pdb
+  namespace: mas-fordkyverno-visualinspection
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: edgeman
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-visualinspection-model-conversion-pdb
+  namespace: mas-fordkyverno-visualinspection
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: model-conversion
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-visualinspection-operator-pdb
+  namespace: mas-fordkyverno-visualinspection
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ibm-mas-visualinspection
+      app.kubernetes.io/managed-by: olm
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-visualinspection-service-dataset-pdb
+  namespace: mas-fordkyverno-visualinspection
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: service-dataset
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-visualinspection-service-pdb
+  namespace: mas-fordkyverno-visualinspection
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: service
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-visualinspection-taskanaly-pdb
+  namespace: mas-fordkyverno-visualinspection
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: taskanaly
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-visualinspection-ui-pdb
+  namespace: mas-fordkyverno-visualinspection
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ui
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-visualinspection-video-microservice-pdb
+  namespace: mas-fordkyverno-visualinspection
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: video-microservice

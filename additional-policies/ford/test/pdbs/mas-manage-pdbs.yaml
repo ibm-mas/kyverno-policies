@@ -1,0 +1,221 @@
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-manage-bdi-pdb
+  namespace: mas-fordkyverno-manage
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      mas.ibm.com/appType: "manage-bdi"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-manage-entitymgr-acc-pdb
+  namespace: mas-fordkyverno-manage
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      mas.ibm.com/appType: "entitymgr-acc-operator"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-manage-entitymgr-appstatus-pdb
+  namespace: mas-fordkyverno-manage
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      mas.ibm.com/appType: "entitymgr-appstatus-operator"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-manage-entitymgr-bdi-pdb
+  namespace: mas-fordkyverno-manage
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      mas.ibm.com/appType: "entitymgr-bdi-operator"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-manage-entitymgr-primary-entity-pdb
+  namespace: mas-fordkyverno-manage
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      mas.ibm.com/appType: "entitymgr-primary-entity"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-manage-entitymgr-ws-pdb
+  namespace: mas-fordkyverno-manage
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      mas.ibm.com/appType: "entitymgr-ws-operator"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-manage-groupsyncagent-pdb
+  namespace: mas-fordkyverno-manage
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      mas.ibm.com/appType: "groupSynchAgent"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-manage-healthext-entitymgr-acc-pdb
+  namespace: mas-fordkyverno-manage
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      mas.ibm.com/appType: "healthext-entitymgr-acc-operator"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-manage-healthext-entitymgr-ws-pdb
+  namespace: mas-fordkyverno-manage
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      mas.ibm.com/appType: "healthext-entitymgr-ws-operator"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-manage-healthext-model-engine-pdb
+  namespace: mas-fordkyverno-manage
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: model-engine
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-manage-imagestitching-api-pdb
+  namespace: mas-fordkyverno-manage
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: "imagestitching-api"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-manage-imagestitching-entitymgr-pdb
+  namespace: mas-fordkyverno-manage
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      mas.ibm.com/appType: imagestitching-entitymgr-operator
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-manage-maxinst-pdb
+  namespace: mas-fordkyverno-manage
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      mas.ibm.com/appType: "maxinstudb"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-manage-monitor-agent-pdb
+  namespace: mas-fordkyverno-manage
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      mas.ibm.com/appType: "monitorAgent"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-manage-operator-pdb
+  namespace: mas-fordkyverno-manage
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ibm-mas-manage
+      app.kubernetes.io/managed-by: olm
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-manage-server-bundle-pdb
+  namespace: mas-fordkyverno-manage
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      mas.ibm.com/appType: "serverBundle"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-manage-slackproxy-api-pdb
+  namespace: mas-fordkyverno-manage
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: "slackproxy-api"
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-manage-slackproxy-entitymgr-pdb
+  namespace: mas-fordkyverno-manage
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      mas.ibm.com/appType: slackproxy-entitymgr-operator
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-manage-truststore-mgr-pdb
+  namespace: mas-fordkyverno-manage
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ibm-truststore-mgr
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mas-manage-usersyncagent-pdb
+  namespace: mas-fordkyverno-manage
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      mas.ibm.com/appType: "userSynchAgent"
