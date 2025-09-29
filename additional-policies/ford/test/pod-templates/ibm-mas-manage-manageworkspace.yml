@@ -15,3 +15,5 @@ podTemplates:
     replicas: 2
   - name: jms
     replicas: 2
+  - name: foundation
+    replicas: 2
