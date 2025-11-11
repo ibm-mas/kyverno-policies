@@ -24,11 +24,11 @@ def get_policy_names():
     return policyNames
 
 @pytest.mark.parametrize("policyName", get_policy_names())
-def testPolicies(policyName):
+def testPolicies(policyName, namespace):
     policyReports = dynClient.resources.get(
         api_version="wgpolicyk8s.io/v1alpha2", kind="PolicyReport"
     )
-    reports = policyReports.get(namespace=None)
+    reports = policyReports.get(namespace=namespace)
     failures = []
     policyMatchCount = 0
     for report in reports.items:
