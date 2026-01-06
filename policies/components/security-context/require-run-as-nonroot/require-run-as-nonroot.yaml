@@ -56,3 +56,12 @@ spec:
               containers:
                 - securityContext:
                     runAsNonRoot: "true"
+      exclude:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              selector:
+                matchExpressions:
+                  - key: "openshift.io/build.name"
+                    operator: Exists
