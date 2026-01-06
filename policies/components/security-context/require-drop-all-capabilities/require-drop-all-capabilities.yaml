@@ -39,3 +39,11 @@ spec:
                   - key: ALL
                     operator: AnyNotIn
                     value: "{{ element.securityContext.capabilities.drop[].to_upper(@) || `[]` }}"
+      exclude:
+        resources:
+          kinds:
+            - Pod
+          selector:
+            matchExpressions:
+              - key: "openshift.io/build.name"
+                operator: Exists
