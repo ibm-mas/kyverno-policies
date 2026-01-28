@@ -3,7 +3,7 @@ apiVersion: kyverno.io/v2
 kind: PolicyException
 metadata:
   name: visualinspection-exceptions
-  namespace: mas-fordkyverno-visualinspection
+  namespace: mas-fips-visualinspection
 spec:
   exceptions:
     - policyName: ford-require-high-availability
@@ -19,7 +19,7 @@ spec:
             - Deployment
             - StatefulSet
           namespaces:
-            - mas-fordkyverno-visualinspection
+            - mas-fips-visualinspection
           selector:
             matchExpressions:
               - key: policies.kyverno.io/exclude
