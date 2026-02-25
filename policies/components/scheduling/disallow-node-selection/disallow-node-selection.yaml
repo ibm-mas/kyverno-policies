@@ -35,6 +35,17 @@ spec:
         pattern:
           spec:
             X(nodeSelector): "null"
+      # Builds could require higher number of resources which we provide customization through podTemplates. 
+      # If the higher resources required are not available on the node, nodeSelector podTemplate option is given to the customer to allow them to select the node on which build should run.
+      # If we remove the nodeSelector option from BuildConfig, they won't be able to select the node and builds may start to fail if resources are exhausted.
+      exclude:
+        resources:
+          kinds:
+            - Pod
+          selector:
+            matchExpressions:
+              - key: "openshift.io/build.name"
+                operator: Exists            
 
     - name: restrict-nodename
       preconditions:
@@ -51,6 +62,9 @@ spec:
                 matchExpressions:
                   - key: ibm.com/kyverno
                     operator: Exists
+      # Builds could require higher number of resources which we provide customization through podTemplates. 
+      # If the higher resources required are not available on the node, nodeSelector podTemplate option is given to the customer to allow them to select the node on which build should run.
+      # If we remove the nodeSelector option from BuildConfig, they won't be able to select the node and builds may start to fail if resources are exhausted.
       exclude:
         any:
           - resources:
@@ -58,6 +72,13 @@ spec:
                 matchExpressions:
                   - key: ibm.com/kyverno
                     operator: Exists
+          - resources:
+            kinds:
+              - Pod
+            selector:
+              matchExpressions:
+                - key: "openshift.io/build.name"
+                  operator: Exists
       validate:
         message: Setting the nodeName field is prohibited.
         pattern:

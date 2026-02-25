@@ -39,3 +39,11 @@ spec:
               - key: "{{ request.object.spec.template.spec.containers[?readinessProbe==livenessProbe] | length(@) }}"
                 operator: GreaterThan
                 value: "0"
+      exclude:
+        resources:
+          kinds:
+            - Pod
+          selector:
+            matchExpressions:
+              - key: "openshift.io/build.name"
+                operator: Exists

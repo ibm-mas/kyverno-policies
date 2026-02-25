@@ -45,3 +45,13 @@ spec:
             containers:
               - =(securityContext):
                   =(runAsUser): ">0"
+      # Documentation shows that securityContext is not supported in the builds: 
+      # https://docs.openshift.com/container-platform/latest/rest_api/workloads_apis/buildconfig-build-openshift-io-v1.html
+      exclude:
+        resources:
+          kinds:
+            - Pod
+          selector:
+            matchExpressions:
+              - key: "openshift.io/build.name"
+                operator: Exists

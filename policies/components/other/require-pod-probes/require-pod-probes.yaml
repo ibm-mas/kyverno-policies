@@ -38,13 +38,21 @@ spec:
                   - key: ibm.com/kyverno
                     operator: Exists
       exclude:
-        resources:
-          kinds:
-            - Pod
-          selector:
-            matchExpressions:
-              - key: "job-name"
-                operator: Exists
+        any:
+          - resources:
+              kinds:
+                - Pod
+              selector:
+                matchExpressions:
+                  - key: "job-name"
+                    operator: Exists
+          - resources:
+              kinds:
+                - Pod
+              selector:
+                matchExpressions:
+                  - key: "openshift.io/build.name"
+                    operator: Exists
       validate:
         message: "Liveness & readiness probes are required for all containers (startup probes are optional)."
         foreach:
