@@ -1,0 +1,26 @@
+---
+apiVersion: kyverno.io/v2
+kind: PolicyException
+metadata:
+  name: visualinspection-exceptions
+  namespace: mas-fips-visualinspection
+spec:
+  exceptions:
+    - policyName: ford-require-high-availability
+      ruleNames:
+        - deployment-has-multiple-replicas
+    - policyName: ford-require-pdb
+      ruleNames:
+        - require-pdb
+  match:
+    any:
+      - resources:
+          kinds:
+            - Deployment
+            - StatefulSet
+          namespaces:
+            - mas-fips-visualinspection
+          selector:
+            matchExpressions:
+              - key: policies.kyverno.io/exclude
+                operator: Exists
