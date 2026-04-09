@@ -26,6 +26,12 @@ spec:
             matchExpressions:
               - key: ibm.com/kyverno
                 operator: Exists
+      exclude:
+        any:
+          - resources:
+              selector:
+                matchLabels:
+                  mas.ibm.com/singleton: "true"
       validate:
         message: "StatefulSets/Deployments should have more than one replica to ensure availability."
         pattern:

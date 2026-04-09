@@ -12,9 +12,10 @@ metadata:
       Deployments to a Kubernetes cluster with multiple availability zones often need to
       distribute those replicas to align with those zones to ensure site-level failures
       do not impact availability. This policy ensures topologySpreadConstraints are defined,
-      to spread pods over nodes and zones. All Deployments and StatefulSets should carry 
-      this configuration, even in cases where there is a single replica it serves to document
-      how the scheduler should handle distribution of newly created replicas.
+      to spread pods over nodes and zones. All Deployments and StatefulSets should carry
+      this configuration (excluding singletons), even in cases where there is a single
+      replica it serves to document how the scheduler should handle distribution of newly
+      created replicas when/if that deployment is scaled up at a later date.
     kyverno.io/kyverno-version: 1.8.0
     kyverno.io/kubernetes-version: "1.22-1.23"
 spec:
@@ -33,6 +34,12 @@ spec:
                 matchExpressions:
                   - key: ibm.com/kyverno
                     operator: Exists
+      exclude:
+        any:
+          - resources:
+              selector:
+                matchLabels:
+                  mas.ibm.com/singleton: "true"
       validate:
         message: "topologySpreadConstraint for kubernetes.io/hostname & topology.kubernetes.io/zone are required"
         deny:
