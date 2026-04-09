@@ -1,0 +1,37 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: ibm-require-ephemeral-storage-sizelimit
+  annotations:
+    policies.kyverno.io/title: Require Ephemeral Storage sizeLimit
+    policies.kyverno.io/category: IBM - Other
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/minversion: 1.6.0
+    policies.kyverno.io/description: >-
+      Ephemeral storage volumes (emptyDir) can consume unbounded storage resources if not properly
+      configured with a sizeLimit. This can lead to node disk pressure and potential pod evictions.
+      This policy requires that all emptyDir volumes define a sizeLimit to ensure proper resource
+      management and prevent storage exhaustion on cluster nodes.
+spec:
+  validationFailureAction: Audit
+  background: true
+  rules:
+    - name: validate-ephemeral-storage-sizelimit
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaceSelector:
+                matchExpressions:
+                  - key: ibm.com/kyverno
+                    operator: Exists
+      validate:
+        message: "All emptyDir volumes must define a sizeLimit to prevent unbounded storage consumption."
+        deny:
+          conditions:
+            any:
+              - key: "{{ request.object.spec.volumes[?type(@) == 'object' && emptyDir != null && emptyDir.sizeLimit == null] | length(@) }}"
+                operator: GreaterThan
+                value: 0

@@ -31,7 +31,7 @@ spec:
           - resources:
               selector:
                 matchLabels:
-                  mas.ibm.com/singleton: "true"
+                  ibm.com/singleton: "true"
       validate:
         message: "StatefulSets/Deployments should have more than one replica to ensure availability."
         pattern:

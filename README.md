@@ -26,6 +26,7 @@ The **audit** and **enforce** overlays can be used to install `-audit` and `-enf
 ### Other
 - **[Disallow Pod Template Hash](policies/components/other/disallow-pod-template-hash/disallow-pod-template-hash.yaml)**
 - **[Disallow Service External IPs](policies/components/other/disallow-service-external-ips/disallow-service-external-ips.yaml)**
+- **[Require Ephemeral Storage SizeLimit](policies/components/other/require-ephemeral-storage-sizelimit/require-ephemeral-storage-sizelimit.yaml)** ensures that all ephemeral storage volumes have a size limit defined.
 - **[Require Image Digest](policies/components/other/require-image-digest/require-image-digest.yaml)** ensures that all references to container images are immutable, eliminating the potential for man-in-the-middle attacks via image registry/tag spoofing.
 - **[Require Pod Probes](policies/components/other/require-pod-probes/require-pod-probes.yaml)** ensures that all pods define liveness, readiness, & startup probes to support standard Kubernetes lifecycle management.  This policy is based on the standard Kyverno [require-probes](https://github.com/kyverno/policies/tree/main/best-practices/require-probes) policy.
 - **[Require Unique Pod Probes](policies/components/other/require-pod-probes-unique/require-pod-probes-unique.yaml)** ensures that the liveness and readiness probes are not the same; liveness and readiness checks accomplish different goals and reusing the same probe for both is an anti-pattern that can lead to problems at runtime.

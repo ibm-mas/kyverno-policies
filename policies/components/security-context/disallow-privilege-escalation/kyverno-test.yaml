@@ -3,28 +3,29 @@ kind: Test
 metadata:
   name: disallow-privilege-escalation
 policies:
-- disallow-privilege-escalation.yaml
+  - disallow-privilege-escalation.yaml
 resources:
-- resources.yaml
+  - resources.yaml
+variables: ../../values.yaml
 results:
-- kind: Pod
-  policy: mas-disallow-privilege-escalation
-  resources:
-  - badpod01
-  - badpod02
-  - badpod03
-  - badpod04
-  - badpod05
-  - badpod06
-  result: fail
-  rule: privilege-escalation
-- kind: Pod
-  policy: mas-disallow-privilege-escalation
-  resources:
-  - goodpod01
-  - goodpod02
-  - goodpod03
-  - goodpod04
-  - goodpod05
-  result: pass
-  rule: privilege-escalation
+  - kind: Pod
+    policy: ibm-disallow-privilege-escalation
+    resources:
+      - badpod01
+      - badpod02
+      - badpod03
+      - badpod04
+      - badpod05
+      - badpod06
+    result: fail
+    rule: privilege-escalation
+  - kind: Pod
+    policy: ibm-disallow-privilege-escalation
+    resources:
+      - goodpod01
+      - goodpod02
+      - goodpod03
+      - goodpod04
+      - goodpod05
+    result: pass
+    rule: privilege-escalation

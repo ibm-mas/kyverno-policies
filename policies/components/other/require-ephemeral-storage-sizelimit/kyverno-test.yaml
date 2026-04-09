@@ -1,0 +1,46 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-ephemeral-storage-sizelimit
+policies:
+  - require-ephemeral-storage-sizelimit.yaml
+resources:
+  - resources.yaml
+variables: ../../values.yaml
+results:
+  - policy: ibm-require-ephemeral-storage-sizelimit
+    rule: validate-ephemeral-storage-sizelimit
+    resources:
+      - good-pod-with-sizelimit
+    kind: Pod
+    result: pass
+  - policy: ibm-require-ephemeral-storage-sizelimit
+    rule: validate-ephemeral-storage-sizelimit
+    resources:
+      - bad-pod-without-sizelimit
+    kind: Pod
+    result: fail
+  - policy: ibm-require-ephemeral-storage-sizelimit
+    rule: validate-ephemeral-storage-sizelimit
+    resources:
+      - good-pod-multiple-volumes
+    kind: Pod
+    result: pass
+  - policy: ibm-require-ephemeral-storage-sizelimit
+    rule: validate-ephemeral-storage-sizelimit
+    resources:
+      - bad-pod-mixed-volumes
+    kind: Pod
+    result: fail
+  - policy: ibm-require-ephemeral-storage-sizelimit
+    rule: validate-ephemeral-storage-sizelimit
+    resources:
+      - good-pod-no-emptydir
+    kind: Pod
+    result: pass
+  - policy: ibm-require-ephemeral-storage-sizelimit
+    rule: validate-ephemeral-storage-sizelimit
+    resources:
+      - good-pod-emptydir-memory
+    kind: Pod
+    result: pass

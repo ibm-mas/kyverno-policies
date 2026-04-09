@@ -3,19 +3,20 @@ kind: Test
 metadata:
   name: require-drop-all-capabilities
 policies:
-- require-drop-all-capabilities.yaml
+  - require-drop-all-capabilities.yaml
 resources:
-- resources.yaml
+  - resources.yaml
+variables: ../../values.yaml
 results:
-- kind: Pod
-  policy: mas-require-drop-all-capabilities
-  resources:
-  - add-capabilities-bad
-  result: fail
-  rule: require-drop-all
-- kind: Pod
-  policy: mas-require-drop-all-capabilities
-  resources:
-  - add-capabilities
-  result: pass
-  rule: require-drop-all
+  - kind: Pod
+    policy: ibm-require-drop-all-capabilities
+    resources:
+      - add-capabilities-bad
+    result: fail
+    rule: require-drop-all
+  - kind: Pod
+    policy: ibm-require-drop-all-capabilities
+    resources:
+      - add-capabilities
+    result: pass
+    rule: require-drop-all

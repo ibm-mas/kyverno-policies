@@ -6,29 +6,30 @@ policies:
   - require-image-digest.yaml
 resources:
   - resources.yaml
+variables: ../../values.yaml
 results:
   # Deployments
   - kind: Deployment
-    policy: mas-require-image-digest
+    policy: ibm-require-image-digest
     resources:
       - baddeployment
     result: fail
     rule: require-image-digest
   - kind: Deployment
-    policy: mas-require-image-digest
+    policy: ibm-require-image-digest
     resources:
       - gooddeployment
     result: pass
     rule: require-image-digest
   # CronJobs
   - kind: CronJob
-    policy: mas-require-image-digest
+    policy: ibm-require-image-digest
     resources:
       - badcronjob
     result: fail
     rule: require-image-digest
   - kind: CronJob
-    policy: mas-require-image-digest
+    policy: ibm-require-image-digest
     resources:
       - goodcronjob
     result: pass

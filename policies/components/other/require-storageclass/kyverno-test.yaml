@@ -6,26 +6,27 @@ policies:
   - require-storageclass.yaml
 resources:
   - resources.yaml
+variables: ../../values.yaml
 results:
-  - policy: mas-require-storageclass
+  - policy: ibm-require-storageclass
     rule: pvc-storageclass
     resources:
       - goodpvc
     kind: PersistentVolumeClaim
     result: pass
-  - policy: mas-require-storageclass
+  - policy: ibm-require-storageclass
     rule: pvc-storageclass
     resources:
       - badpvc
     kind: PersistentVolumeClaim
     result: fail
-  - policy: mas-require-storageclass
+  - policy: ibm-require-storageclass
     rule: ss-storageclass
     resources:
       - goodss
     kind: StatefulSet
     result: pass
-  - policy: mas-require-storageclass
+  - policy: ibm-require-storageclass
     rule: ss-storageclass
     resources:
       - badss

@@ -39,7 +39,7 @@ spec:
           - resources:
               selector:
                 matchLabels:
-                  mas.ibm.com/singleton: "true"
+                  ibm.com/singleton: "true"
       validate:
         message: "topologySpreadConstraint for kubernetes.io/hostname & topology.kubernetes.io/zone are required"
         deny:
