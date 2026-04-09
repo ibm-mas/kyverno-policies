@@ -12,8 +12,9 @@ metadata:
       Deployments to a Kubernetes cluster with multiple availability zones often need to
       distribute those replicas to align with those zones to ensure site-level failures
       do not impact availability. This policy ensures topologySpreadConstraints are defined,
-      to spread pods over nodes and zones. Deployments or Statefulsets with leass than 3
-      replicas are skipped.
+      to spread pods over nodes and zones. All Deployments and StatefulSets should carry 
+      this configuration, even in cases where there is a single replica it serves to document
+      how the scheduler should handle distribution of newly created replicas.
     kyverno.io/kyverno-version: 1.8.0
     kyverno.io/kubernetes-version: "1.22-1.23"
 spec:
@@ -22,11 +23,6 @@ spec:
   failurePolicy: Ignore
   rules:
     - name: spread-pods
-      preconditions:
-        all:
-          - key: "{{ request.object.spec.replicas }}"
-            operator: GreaterThanOrEquals
-            value: 2
       match:
         any:
           - resources:
