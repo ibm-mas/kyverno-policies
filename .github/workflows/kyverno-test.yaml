@@ -1,0 +1,66 @@
+name: Kyverno Policy Tests
+
+on:
+  push:
+    paths:
+      - 'policies/**'
+      - '.github/workflows/kyverno-test.yaml'
+
+jobs:
+  test-policies:
+    runs-on: ubuntu-latest
+    name: Test Kyverno Policies
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Kyverno CLI
+        run: |
+          # Install latest Kyverno CLI
+          curl -LO https://github.com/kyverno/kyverno/releases/download/v1.11.4/kyverno-cli_v1.11.4_linux_x86_64.tar.gz
+          tar -xzf kyverno-cli_v1.11.4_linux_x86_64.tar.gz
+          sudo mv kyverno /usr/local/bin/
+          kyverno version
+
+      - name: Run Kyverno Tests
+        run: |
+          echo "Running Kyverno policy tests..."
+
+          # Find all directories with kyverno-test.yaml files
+          test_dirs=$(find policies/components -name "kyverno-test.yaml" -exec dirname {} \;)
+
+          failed_tests=0
+          passed_tests=0
+
+          for dir in $test_dirs; do
+            echo ""
+            echo "=========================================="
+            echo "Testing: $dir"
+            echo "=========================================="
+
+            if kyverno test "$dir/"; then
+              echo "✅ PASSED: $dir"
+              ((passed_tests++))
+            else
+              echo "❌ FAILED: $dir"
+              ((failed_tests++))
+            fi
+          done
+
+          echo ""
+          echo "=========================================="
+          echo "Test Summary"
+          echo "=========================================="
+          echo "Passed: $passed_tests"
+          echo "Failed: $failed_tests"
+          echo "Total:  $((passed_tests + failed_tests))"
+
+          if [ $failed_tests -gt 0 ]; then
+            echo ""
+            echo "❌ Some tests failed!"
+            exit 1
+          else
+            echo ""
+            echo "✅ All tests passed!"
+          fi

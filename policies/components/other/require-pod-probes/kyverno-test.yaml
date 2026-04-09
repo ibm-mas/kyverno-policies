@@ -6,9 +6,10 @@ policies:
   - require-pod-probes.yaml
 resources:
   - resources.yaml
+variables: ../../values.yaml
 results:
   - kind: Pod
-    policy: mas-require-pod-probes
+    policy: ibm-require-pod-probes
     resources:
       - badpod-noprobes
       - badpod-noreadiness
@@ -17,7 +18,7 @@ results:
     result: fail
     rule: validate-probes
   - kind: Pod
-    policy: mas-require-pod-probes
+    policy: ibm-require-pod-probes
     resources:
       - goodpod-allprobes
     result: pass

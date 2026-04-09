@@ -6,20 +6,21 @@ policies:
   - disallow-service-external-ips.yaml
 resources:
   - resources.yaml
+variables: ../../values.yaml
 results:
-  - policy: mas-disallow-service-external-ips
+  - policy: ibm-disallow-service-external-ips
     rule: check-ips
     resources:
       - goodservice01
     kind: Service
     result: pass
-  - policy: mas-disallow-service-external-ips
+  - policy: ibm-disallow-service-external-ips
     rule: check-ips
     resources:
       - badservice01
     kind: Service
     result: fail
-  - policy: mas-disallow-service-external-ips
+  - policy: ibm-disallow-service-external-ips
     rule: check-ips
     resources:
       - badservice02

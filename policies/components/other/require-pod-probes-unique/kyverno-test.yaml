@@ -6,15 +6,16 @@ policies:
   - require-pod-probes-unique.yaml
 resources:
   - resources.yaml
+variables: ../../values.yaml
 results:
   - kind: Deployment
-    policy: mas-require-pod-probes-unique
+    policy: ibm-require-pod-probes-unique
     resources:
       - baddeployment
     result: fail
     rule: validate-probes-are-unique
   - kind: Deployment
-    policy: mas-require-pod-probes-unique
+    policy: ibm-require-pod-probes-unique
     resources:
       - gooddeployment
     result: pass
