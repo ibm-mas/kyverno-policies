@@ -27,6 +27,8 @@ spec:
                 matchExpressions:
                   - key: ibm.com/kyverno
                     operator: Exists
+      # Documentation shows that there is no way to define sizeLimit for the emptyDir created by builder:
+      # https://docs.openshift.com/container-platform/latest/rest_api/workloads_apis/buildconfig-build-openshift-io-v1.html
       exclude:
         any:
           - resources:
