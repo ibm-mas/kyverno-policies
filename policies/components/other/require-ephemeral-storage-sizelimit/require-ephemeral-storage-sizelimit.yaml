@@ -27,6 +27,15 @@ spec:
                 matchExpressions:
                   - key: ibm.com/kyverno
                     operator: Exists
+      exclude:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              selector:
+                matchExpressions:
+                  - key: "openshift.io/build.name"
+                    operator: Exists
       validate:
         message: "All emptyDir volumes must define a sizeLimit to prevent unbounded storage consumption."
         deny:
