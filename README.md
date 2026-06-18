@@ -36,9 +36,7 @@ The **audit** and **enforce** overlays can be used to install `-audit` and `-enf
 
 Compliance Matrix
 -------------------------------------------------------------------------------
-Kyverno policy support is a work in progress, encompassing a multi-year project involving significant architectural changes.
-
-The table below attempts to summarize the current position in Maximo Application Suite 9.2.  IBM are actively working to address the current compliance gaps.
+The table below attempts to summarize the current position in Maximo Application Suite 9.2:
 
 | Kyverno Policy                          | Cor | IoT | Man | Mon | Pre | Ins | Fac | Opt |
 |-----------------------------------------| :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
