@@ -34,6 +34,41 @@ The **audit** and **enforce** overlays can be used to install `-audit` and `-enf
 - **[Require StorageClass](policies/components/other/require-storageclass/require-storageclass.yaml)**
 
 
+Compliance Matrix
+-------------------------------------------------------------------------------
+Kyverno policy support is a work in progress, encompassing a multi-year project involving significant architectural changes.
+
+The table below attempts to summarize the current position in Maximo Application Suite 9.2.  IBM are actively working to address the current compliance gaps.
+
+| Kyverno Policy                          | Core | IoT | Manage | Monitor | Predict | Inspection | Facilities | Optimizer |
+|-----------------------------------------| :--: | :-: | :----: | :-----: | :-----: | :--------: | :--------: | :-------: |
+| ibm-disallow-master-infra-tolerations   | ✅  | ✅  | ✅    | ✅      | ✅     | ✅         | ✅        | ✅        |
+| ibm-disallow-node-selection             | ✅  | ✅  | ✅    | ✅      | ✅     | ✅         | ✅        | ✅        |
+| ibm-disallow-pod-template-hash          | ✅  | ✅  | ✅    | ✅      | ✅     | ✅         | ✅        | ✅        |
+| ibm-disallow-privilege-escalation       | ✅  | ❌  | ✅    | ✅      | ✅     | ⚠️         | ✅        | ✅        |
+| ibm-disallow-role-with-wildcards        | ✅  | ❌  | ✅    | ✅      | ✅     | ⚠️         | ✅        | ✅        |
+| ibm-disallow-run-as-root-user           | ✅  | ✅  | ✅    | ✅      | ✅     | ⚠️         | ✅        | ✅        |
+| ibm-disallow-service-external-ips       | ✅  | ✅  | ✅    | ✅      | ✅     | ✅         | ✅        | ✅        |
+| ibm-disallow-sysctls                    | ✅  | ✅  | ✅    | ✅      | ✅     | ✅         | ✅        | ✅        |
+| ibm-require-drop-all-capabilities       | ✅  | ❌  | ✅    | ✅      | ✅     | ⚠️         | ✅        | ✅        |
+| ibm-require-ephemeral-storage-sizelimit | ✅  | ❌  | ✅    | ✅      | ✅     | ✅         | ✅        | ✅        |
+| ibm-require-image-digest                | ✅  | ✅  | ✅    | ✅      | ✅     | ✅         | ✅        | ✅        |
+| ibm-require-pod-probes-unique           | ✅  | ❌  | ⚠️    | ❌      | ❌     | ✅         | ✅        | ❌        |
+| ibm-require-pod-probes                  | ✅  | ❌  | ⚠️    | ✅      | ✅     | ✅         | ✅        | ❌        |
+| ibm-require-pod-requests-limits         | ✅  | ✅  | ⚠️    | ✅      | ❌     | ✅         | ✅        | ✅        |
+| ibm-require-ro-rootfs                   | ⚠️  | ❌  | ⚠️    | ❌      | ❌     | ⚠️         | ❌        | ✅        |
+| ibm-require-run-as-nonroot              | ✅  | ❌  | ✅    | ✅      | ✅     | ⚠️         | ✅        | ✅        |
+| ibm-require-storageclass                | ✅  | ✅  | ⚠️    | ✅      | ✅     | ✅         | ✅        | ✅        |
+| ibm-require-topologyspreadconstraints   | ✅  | ❌  | ⚠️    | ✅      | ❌     | ⚠️         | ✅        | ❌        |
+
+✅ Fully compliant | ⚠️ Partial compliance, see notes | ❌ Not compliant
+
+**Notes:**
+- Core support for `ibm-require-ro-rootfs` is gated behind `settings.readOnlyRootFilesystem`
+- Manage support for `ibm-require-ro-rootfs` is gated behind `settings.readOnlyRootFilesystem`, full compliance is limited to Manage Foundation only currently
+- Visual Inspection policy compliance is limited to specific configurations of the application only, contact IBM Support for more information
+
+
 Install Kyverno
 -------------------------------------------------------------------------------
 https://kyverno.io/docs/installation/methods/
@@ -51,6 +86,7 @@ set +f
 oc -n kyverno set resources deployment kyverno-reports-controller -c=controller --limits=memory=1024Mi
 ```
 
+
 Install Kyverno CLI
 -------------------------------------------------------------------------------
 
@@ -61,6 +97,7 @@ mv kyverno /usr/local/bin
 rm kyverno-cli_v1.14.4_linux_x86_64.tar.gz
 kyverno version
 ```
+
 
 Testing Policies
 -------------------------------------------------------------------------------
