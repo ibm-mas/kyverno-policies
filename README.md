@@ -40,26 +40,26 @@ Kyverno policy support is a work in progress, encompassing a multi-year project 
 
 The table below attempts to summarize the current position in Maximo Application Suite 9.2.  IBM are actively working to address the current compliance gaps.
 
-| Kyverno Policy                          | Core | IoT | Manage | Monitor | Predict | Inspection | Facilities | Optimizer |
-|-----------------------------------------| :--: | :-: | :----: | :-----: | :-----: | :--------: | :--------: | :-------: |
-| ibm-disallow-master-infra-tolerations   | ✅  | ✅  | ✅    | ✅      | ✅     | ✅         | ✅        | ✅        |
-| ibm-disallow-node-selection             | ✅  | ✅  | ✅    | ✅      | ✅     | ✅         | ✅        | ✅        |
-| ibm-disallow-pod-template-hash          | ✅  | ✅  | ✅    | ✅      | ✅     | ✅         | ✅        | ✅        |
-| ibm-disallow-privilege-escalation       | ✅  | ❌  | ✅    | ✅      | ✅     | ⚠️         | ✅        | ✅        |
-| ibm-disallow-role-with-wildcards        | ✅  | ❌  | ✅    | ✅      | ✅     | ⚠️         | ✅        | ✅        |
-| ibm-disallow-run-as-root-user           | ✅  | ✅  | ✅    | ✅      | ✅     | ⚠️         | ✅        | ✅        |
-| ibm-disallow-service-external-ips       | ✅  | ✅  | ✅    | ✅      | ✅     | ✅         | ✅        | ✅        |
-| ibm-disallow-sysctls                    | ✅  | ✅  | ✅    | ✅      | ✅     | ✅         | ✅        | ✅        |
-| ibm-require-drop-all-capabilities       | ✅  | ❌  | ✅    | ✅      | ✅     | ⚠️         | ✅        | ✅        |
-| ibm-require-ephemeral-storage-sizelimit | ✅  | ❌  | ✅    | ✅      | ✅     | ✅         | ✅        | ✅        |
-| ibm-require-image-digest                | ✅  | ✅  | ✅    | ✅      | ✅     | ✅         | ✅        | ✅        |
-| ibm-require-pod-probes-unique           | ✅  | ❌  | ⚠️    | ❌      | ❌     | ✅         | ✅        | ❌        |
-| ibm-require-pod-probes                  | ✅  | ❌  | ⚠️    | ✅      | ✅     | ✅         | ✅        | ❌        |
-| ibm-require-pod-requests-limits         | ✅  | ✅  | ⚠️    | ✅      | ❌     | ✅         | ✅        | ✅        |
-| ibm-require-ro-rootfs                   | ⚠️  | ❌  | ⚠️    | ❌      | ❌     | ⚠️         | ❌        | ✅        |
-| ibm-require-run-as-nonroot              | ✅  | ❌  | ✅    | ✅      | ✅     | ⚠️         | ✅        | ✅        |
-| ibm-require-storageclass                | ✅  | ✅  | ⚠️    | ✅      | ✅     | ✅         | ✅        | ✅        |
-| ibm-require-topologyspreadconstraints   | ✅  | ❌  | ⚠️    | ✅      | ❌     | ⚠️         | ✅        | ❌        |
+| Kyverno Policy                          | Cor | IoT | Man | Mon | Pre | Ins | Fac | Opt |
+|-----------------------------------------| :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| ibm-disallow-master-infra-tolerations   | ✅ | ✅  | ✅  | ✅ | ✅ | ✅ | ✅  | ✅  |
+| ibm-disallow-node-selection             | ✅ | ✅  | ✅  | ✅ | ✅ | ✅ | ✅  | ✅  |
+| ibm-disallow-pod-template-hash          | ✅ | ✅  | ✅  | ✅ | ✅ | ✅ | ✅  | ✅  |
+| ibm-disallow-privilege-escalation       | ✅ | ❌  | ✅  | ✅ | ✅ | ⚠️ | ✅  | ✅  |
+| ibm-disallow-role-with-wildcards        | ✅ | ❌  | ✅  | ✅ | ✅ | ⚠️ | ✅  | ✅  |
+| ibm-disallow-run-as-root-user           | ✅ | ✅  | ✅  | ✅ | ✅ | ⚠️ | ✅  | ✅  |
+| ibm-disallow-service-external-ips       | ✅ | ✅  | ✅  | ✅ | ✅ | ✅ | ✅  | ✅  |
+| ibm-disallow-sysctls                    | ✅ | ✅  | ✅  | ✅ | ✅ | ✅ | ✅  | ✅  |
+| ibm-require-drop-all-capabilities       | ✅ | ❌  | ✅  | ✅ | ✅ | ⚠️ | ✅  | ✅  |
+| ibm-require-ephemeral-storage-sizelimit | ✅ | ❌  | ✅  | ✅ | ✅ | ✅ | ✅  | ✅  |
+| ibm-require-image-digest                | ✅ | ✅  | ✅  | ✅ | ✅ | ✅ | ✅  | ✅  |
+| ibm-require-pod-probes-unique           | ✅ | ❌  | ⚠️  | ❌ | ❌ | ✅ | ✅  | ❌  |
+| ibm-require-pod-probes                  | ✅ | ❌  | ⚠️  | ✅ | ✅ | ✅ | ✅  | ❌  |
+| ibm-require-pod-requests-limits         | ✅ | ✅  | ⚠️  | ✅ | ❌ | ✅ | ✅  | ✅  |
+| ibm-require-ro-rootfs                   | ⚠️ | ❌  | ⚠️  | ❌ | ❌ | ⚠️ | ❌  | ✅  |
+| ibm-require-run-as-nonroot              | ✅ | ❌  | ✅  | ✅ | ✅ | ⚠️ | ✅  | ✅  |
+| ibm-require-storageclass                | ✅ | ✅  | ⚠️  | ✅ | ✅ | ✅ | ✅  | ✅  |
+| ibm-require-topologyspreadconstraints   | ✅ | ❌  | ⚠️  | ✅ | ❌ | ⚠️ | ✅  | ❌  |
 
 ✅ Fully compliant | ⚠️ Partial compliance, see notes | ❌ Not compliant
 
