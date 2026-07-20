@@ -44,3 +44,9 @@ results:
       - good-pod-emptydir-memory
     kind: Pod
     result: pass
+  - policy: ibm-require-ephemeral-storage-sizelimit
+    rule: validate-ephemeral-storage-sizelimit
+    resources:
+      - good-pod-istio-volume
+    kind: Pod
+    result: pass

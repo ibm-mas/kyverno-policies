@@ -43,6 +43,8 @@ spec:
         deny:
           conditions:
             any:
-              - key: "{{ request.object.spec.volumes[?type(@) == 'object' && emptyDir != null && emptyDir.sizeLimit == null] | length(@) }}"
+              # We pass 'istio-envoy', 'istio-data', 'workload-socket', 'credential-socket' and 'workload-certs' volumes,
+              # they are unbounded storage volumes created for istio proxy containers.
+              - key: "{{ request.object.spec.volumes[?type(@) == 'object' && emptyDir != null && emptyDir.sizeLimit == null && !contains(['istio-envoy', 'istio-data', 'workload-socket', 'credential-socket', 'workload-certs'], name)] | length(@) }}"
                 operator: GreaterThan
                 value: 0
