@@ -109,3 +109,24 @@ spec:
       emptyDir:
         medium: Memory
         sizeLimit: 256Mi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: good-pod-istio-volume
+  namespace: mas-dev-core
+spec:
+  containers:
+    - name: nginx
+      image: nginx:1.14.2
+      volumeMounts:
+        - name: tmp-volume
+          mountPath: /tmp
+        - name: istio-data
+          mountPath: /var/lib/istio/data
+  volumes:
+    - name: tmp-volume
+      emptyDir:
+        sizeLimit: 2Gi
+    - name: istio-data
+      emptyDir: {}

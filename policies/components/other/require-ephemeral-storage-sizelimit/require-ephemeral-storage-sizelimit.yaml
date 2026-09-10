@@ -43,6 +43,10 @@ spec:
         deny:
           conditions:
             any:
-              - key: "{{ request.object.spec.volumes[?type(@) == 'object' && emptyDir != null && emptyDir.sizeLimit == null] | length(@) }}"
+              # We allow 'istio-envoy', 'istio-data', 'workload-socket', 'credential-socket' and 'workload-certs' to be unbounded volumes,
+              # These are storage volumes created specifically for istio proxy containers and will only be present if Service Mesh/Istio has 
+              # been installed and enabled in the MAS namespaces. The standard Istio sidecar container automatically defines these unbounded volumes
+              # see https://github.com/istio/istio/blob/6085d1e7ee6f21d5689ea9b16a33fa809b25cec4/manifests/charts/istio-control/istio-discovery/files/injection-template.yaml#L476 
+              - key: "{{ request.object.spec.volumes[?type(@) == 'object' && emptyDir != null && emptyDir.sizeLimit == null && !contains(['istio-envoy', 'istio-data', 'workload-socket', 'credential-socket', 'workload-certs'], name)] | length(@) }}"
                 operator: GreaterThan
                 value: 0
