@@ -23,8 +23,34 @@ def get_policy_names():
     policyNames = [policy.metadata.name for policy in policies.items]
     return policyNames
 
+def is_ha_enabled(namespace):
+    """
+    Check if High Availability is enabled for the VisualInspectionApp in the given namespace.
+    Returns False if highAvailability setting is False or omitted on dev instances.
+    """
+    if not namespace:
+        return True
+    try:
+        viapp_resource = dynClient.resources.get(api_version="apps.mas.ibm.com/v1", kind="VisualInspectionApp")
+        apps = viapp_resource.get(namespace=namespace)
+        if apps and apps.items:
+            for app in apps.items:
+                settings = getattr(app.spec, 'settings', {}) or {}
+                if settings.get('highAvailability', False):
+                    return True
+            return False
+    except Exception as e:
+        logger.warning(f"Could not determine HA status for namespace {namespace}: {e}")
+    return True
+
 @pytest.mark.parametrize("policyName", get_policy_names())
 def testPolicies(policyName, namespace):
+    # Respect the ford-require-high-availability Audit mode exception when HA is disabled on dev instances
+    if policyName == "ford-require-high-availability" and not is_ha_enabled(namespace):
+        pytest.skip(
+            f"Policy '{policyName}' is allowed in Audit mode when high availability is disabled for namespace '{namespace}'"
+        )
+
     policyReports = dynClient.resources.get(
         api_version="wgpolicyk8s.io/v1alpha2", kind="PolicyReport"
     )
